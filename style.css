@@ -1,0 +1,68 @@
+/* ページ全体の基本設定 */
+body {
+  font-family: sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  background-color: #f9f9f9;
+}
+
+/* 見出しのデザイン */
+h1 {
+  background-color: #333;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+}
+
+/* 段落のデザイン */
+p {
+  padding: 1rem;
+  max-width: 800px;
+  margin: auto;
+}
+/* ヘッダー部分 */
+header {
+  background-color: #333;
+  color: white;
+  padding: 1rem;
+}
+
+header h1 {
+  margin: 0;
+}
+
+header nav {
+  margin-top: 0.5rem;
+}
+
+header nav a {
+  color: white;
+  text-decoration: none;
+  margin-right: 1rem;
+}
+
+header nav a:hover {
+  text-decoration: underline;
+}
+
+/* メイン部分 */
+main {
+  max-width: 800px;
+  margin: auto;
+  padding: 1rem;
+}
+
+article {
+  background: white;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 5px;
+}
+
+/* フッター部分 */
+footer {
+  background-color: #f4f4f4;
+  text-align: center;
+  padding: 1rem;
+  margin-top: 2rem;
+}
