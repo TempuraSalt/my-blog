@@ -1,37 +1,38 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Blog</title>
-  <link rel="stylesheet" href="style_v2.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ブログ</title>
+  <link rel="stylesheet" href="/my-blog/style.css">
+  <script src="/my-blog/common.js" defer></script>
 </head>
 <body>
-  <div class="container">
-  <header>
-    <h1>Blog</h1>
-    <nav>
-      <a href="index.html">ホーム</a>
-      <a href="about.html">このブログについて</a>
-      <a href="contact.html">お問い合わせ</a>
-    </nav>
-  </header>
+  <div id="site-header"></div>
 
-  <main>
-    <article>
-      <h2><a href="#">記事タイトル1</a></h2>
-      <p>これは記事の短い紹介文です。続きはクリックして読んでください。</p>
-    </article>
+  <main class="container">
+    <section class="hero">
+      <p>ここは「ブログ」です。日々のメモや学びをまとめます。</p>
+    </section>
 
-    <article>
-      <h2><a href="#">記事タイトル2</a></h2>
-      <p>別の記事の説明文です。ここに概要を入れます。</p>
-    </article>
+    <section id="posts" class="posts" aria-label="記事一覧">
+      <!-- JavaScriptで埋める -->
+    </section>
   </main>
 
-  <footer>
-    <p>&copy; 2025 Blog</p>
-  </footer>
- </div> 
+  <div id="site-footer"></div>
+
+  <script>
+    (async ()=>{
+      const posts = await loadPosts();
+      const el = document.getElementById('posts');
+      if(!posts || posts.length===0){ el.innerHTML='<p>まだ記事がありません。</p>'; return }
+      posts.sort((a,b)=> b.date.localeCompare(a.date));
+      posts.forEach(p=>{
+        const html = `\n<article class="post-card">\n  <h3><a href="${p.url}">${p.title}</a></h3>\n  <div class="post-meta">${p.date}</div>\n  <p>${p.excerpt}</p>\n</article>`;
+        el.insertAdjacentHTML('beforeend', html);
+      });
+    })();
+  </script>
 </body>
 </html>

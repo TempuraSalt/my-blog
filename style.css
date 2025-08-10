@@ -1,57 +1,33 @@
-body {
-  font-family: sans-serif;
-  max-width: 800px;
-  margin: auto;
-  line-height: 1.6;
-  padding: 20px;
-  background-color: #fafafa;
-  color: #333;
+:root{
+  --max-width:920px;
+  --accent:#0b72c3;
+  --muted:#6b7280;
+  --bg:#f7f8fa;
+  --card:#ffffff;
 }
-
-header {
-  border-bottom: 1px solid #ccc;
-  margin-bottom: 20px;
+html{background:var(--bg);height:100%;}
+body{
+  margin:0;
+  font-family:"Noto Sans JP", "Hiragino Kaku Gothic Pro", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  color:#111;
+  min-height:100vh;
 }
-
-header h1 {
-  margin: 0 0 10px 0;
+.container{
+  max-width:var(--max-width);
+  margin:0 auto;
+  padding:28px 18px;
 }
-
-nav a {
-  margin-right: 10px;
-  text-decoration: none;
-  color: #007acc;
-  font-weight: bold;
-}
-
-nav a:hover {
-  text-decoration: underline;
-}
-
-main article {
-  border-bottom: 1px solid #eee;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-}
-
-main article h2 {
-  margin: 0 0 5px 0;
-}
-
-main article h2 a {
-  color: #333;
-  text-decoration: none;
-}
-
-main article h2 a:hover {
-  text-decoration: underline;
-}
-
-footer {
-  border-top: 1px solid #ccc;
-  margin-top: 20px;
-  padding-top: 10px;
-  font-size: 0.9em;
-  color: #666;
-  text-align: center;
-}
+.site-header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:8px 0 18px 0}
+.site-title{font-weight:700;font-size:1.25rem;margin:0}
+.site-nav a{color:var(--accent);text-decoration:none;margin-left:14px;font-weight:600}
+.site-nav a:hover{text-decoration:underline}
+.hero{background:linear-gradient(180deg, rgba(11,114,195,0.06), transparent);border-radius:10px;padding:16px;margin-bottom:18px}
+.posts{display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:28px}
+.post-card{background:var(--card);padding:16px;border-radius:10px;box-shadow:0 6px 18px rgba(12,30,50,0.04);border:1px solid rgba(10,10,10,0.03)}
+.post-card h3{margin:0 0 8px 0;font-size:1.1rem}
+.post-meta{color:var(--muted);font-size:0.9rem;margin-bottom:8px}
+.post-body{line-height:1.85;font-size:1rem}
+.post-body img{max-width:100%;height:auto;border-radius:6px}
+.site-footer{text-align:center;color:var(--muted);font-size:0.9rem;margin-top:36px;padding-top:18px;border-top:1px solid rgba(0,0,0,0.04)}
+@media(min-width:900px){.posts{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.container{padding:14px}.site-title{font-size:1.05rem}}
