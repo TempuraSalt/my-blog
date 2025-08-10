@@ -1,13 +1,26 @@
-body {
-  font-family: sans-serif;
-  max-width: 800px;
-  margin: auto;
-  line-height: 1.6;
-  padding: 20px;
+/* 全体の背景は html に付けて画面全体を塗る */
+html {
   background-color: #fafafa;
-  color: #333;
+  height: 100%;
 }
 
+/* body はページ全体を使う（幅制限はしない） */
+body {
+  font-family: sans-serif;
+  margin: 0;
+  line-height: 1.6;
+  color: #333;
+  min-height: 100vh;
+}
+
+/* 中央のコンテンツ幅を .container に移動 */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* ヘッダー等はそのまま */
 header {
   border-bottom: 1px solid #ccc;
   margin-bottom: 20px;
@@ -28,10 +41,14 @@ nav a:hover {
   text-decoration: underline;
 }
 
+/* 記事カードを白で浮かせてボーダーを見やすく */
 main article {
-  border-bottom: 1px solid #eee;
+  background: #ffffff;
+  border-bottom: 1px solid #ddd; /* 少し濃いめに */
   margin-bottom: 20px;
-  padding-bottom: 10px;
+  padding: 15px;
+  border-radius: 6px;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.02);
 }
 
 main article h2 {
