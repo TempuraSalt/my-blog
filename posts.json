@@ -1,5 +1,11 @@
 [
   {
+  "title": "新機能について",
+  "url": "/my-blog/posts/2025-08-11-new-feature.html",
+  "date": "2025-08-11",
+  "excerpt": "新機能の概要を短く書きます。"
+},
+  {
     "title": "はじめての記事",
     "url": "/my-blog/posts/2025-08-10-my-first-post.html",
     "date": "2025-08-10",
