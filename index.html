@@ -23,16 +23,29 @@
   <div id="site-footer"></div>
 
   <script>
-    (async ()=>{
-      const posts = await loadPosts();
-      const el = document.getElementById('posts');
-      if(!posts || posts.length===0){ el.innerHTML='<p>まだ記事がありません。</p>'; return }
-      posts.sort((a,b)=> b.date.localeCompare(a.date));
-      posts.forEach(p=>{
-        const html = `\n<article class="post-card">\n  <h3><a href="${p.url}">${p.title}</a></h3>\n  <div class="post-meta">${p.date}</div>\n  <p>${p.excerpt}</p>\n</article>`;
-        el.insertAdjacentHTML('beforeend', html);
-      });
-    })();
-  </script>
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const posts = await loadPosts();
+    const el = document.getElementById('posts');
+    if(!posts || posts.length === 0){
+      el.innerHTML = '<p>まだ記事がありません。</p>';
+      return;
+    }
+    posts.sort((a,b) => b.date.localeCompare(a.date));
+    posts.forEach(p => {
+      const html = `
+<article class="post-card">
+  <h3><a href="${p.url}">${p.title}</a></h3>
+  <div class="post-meta">${p.date}</div>
+  <p>${p.excerpt || ''}</p>
+</article>`;
+      el.insertAdjacentHTML('beforeend', html);
+    });
+  } catch (err) {
+    console.error('posts load error', err);
+    document.getElementById('posts').innerHTML = '<p>記事の読み込みに失敗しました。</p>';
+  }
+});
+</script>
 </body>
 </html>
