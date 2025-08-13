@@ -1,14 +1,20 @@
 [
   {
-  "title": "新機能について",
-  "url": "/my-blog/posts/2025-08-11-new-feature.html",
-  "date": "2025-08-11",
-  "excerpt": "新機能の概要を短く書きます。"
-},
+    "title": "テスト投稿 - ブログ",
+    "url": "/my-blog/posts/2025-08-12-test-action.html",
+    "date": "2025-08-12",
+    "excerpt": "自動化テスト用のダミー記事です。"
+  },
   {
-    "title": "はじめての記事",
+    "title": "新しい記事のタイトル - ブログ",
+    "url": "/my-blog/posts/2025-08-11-new-feature.html",
+    "date": "2025-08-11",
+    "excerpt": "ここに本文を書きます。"
+  },
+  {
+    "title": "はじめての記事 - ブログ",
     "url": "/my-blog/posts/2025-08-10-my-first-post.html",
     "date": "2025-08-10",
-    "excerpt": "サイトのサンプル記事です。"
+    "excerpt": "これはサンプル記事です。本文をここに書いてください。"
   }
 ]
