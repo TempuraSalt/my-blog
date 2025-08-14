@@ -1,26 +1,45 @@
 [
   {
+    "title": "記事タイトル - ブログ",
+    "url": "/my-blog/posts/post-template.html",
+    "date": "2025-08-14",
+    "excerpt": "この記事の短い説明（excerpt）",
+    "cover": "/my-blog/images/2025-08-14-cover.jpg",
+    "tags": [
+      "タグ1",
+      "タグ2"
+    ]
+  },
+  {
     "title": "テスト投稿 - ブログ",
     "url": "/my-blog/posts/2025-08-13-test-post.html",
     "date": "2025-08-13",
-    "excerpt": "これは自動化のテスト投稿です。表示されればOK。"
+    "excerpt": "これは自動化のテスト投稿です。表示されればOK。",
+    "cover": null,
+    "tags": []
   },
   {
     "title": "テスト投稿 - ブログ",
     "url": "/my-blog/posts/2025-08-12-test-action.html",
     "date": "2025-08-12",
-    "excerpt": "自動化テスト用のダミー記事です。"
+    "excerpt": "自動化テスト用のダミー記事です。",
+    "cover": null,
+    "tags": []
   },
   {
     "title": "新しい記事のタイトル - ブログ",
     "url": "/my-blog/posts/2025-08-11-new-feature.html",
     "date": "2025-08-11",
-    "excerpt": "ここに本文を書きます。"
+    "excerpt": "ここに本文を書きます。",
+    "cover": null,
+    "tags": []
   },
   {
     "title": "はじめての記事 - ブログ",
     "url": "/my-blog/posts/2025-08-10-my-first-post.html",
     "date": "2025-08-10",
-    "excerpt": "これはサンプル記事です。本文をここに書いてください。"
+    "excerpt": "これはサンプル記事です。本文をここに書いてください。",
+    "cover": null,
+    "tags": []
   }
 ]
