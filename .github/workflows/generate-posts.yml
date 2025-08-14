@@ -2,9 +2,13 @@ name: Generate posts.json
 
 on:
   push:
-    # posts フォルダに新しい投稿ファイルを push したときに実行
+    branches: [ main ]
     paths:
       - 'posts/**'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -30,10 +34,7 @@ jobs:
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add posts.json
             git commit -m "chore: update posts.json"
-            git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
-            git push origin HEAD:main
+            git push
           else
             echo "No changes to posts.json"
           fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
