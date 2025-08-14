@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>ブログ</title>
   <meta name="description" content="個人ブログ。メモや学びをまとめます。">
-  <link rel="stylesheet" href="/my-blog/style.css">
+  <link rel="stylesheet" href="/my-blog/style.css" />
   <script src="/my-blog/common.js" defer></script>
 </head>
 <body>
@@ -17,27 +17,62 @@
     </section>
 
     <section id="posts" class="posts" aria-label="記事一覧">
-      <!-- JavaScriptで埋める -->
+      <!-- JavaScript でここを埋める -->
     </section>
   </main>
 
   <div id="site-footer"></div>
 
   <script>
-    // 安全に posts.json を読み込んでカードを描画する
-    (async function(){
-      try{
-        const posts = await loadPosts(); // common.js の loadPosts()
-        const el = document.getElementById('posts');
-        if(!posts || posts.length === 0){
-          el.innerHTML = '<p>まだ記事がありません。</p>';
-          return;
+  // helper: escape HTML to avoid XSS when inserting text from posts.json
+  function escapeHtml(s){
+    if(!s) return '';
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // returns true if string ends with .webp (case-insensitive)
+  function isWebp(p){ return /\.webp$/i.test(p); }
+  // returns jpg fallback path for a given webp path (replace .webp -> .jpg)
+  function webpToJpg(p){ return p.replace(/\.webp$/i, '.jpg'); }
+
+  (async function(){
+    try{
+      const posts = await loadPosts(); // common.js の loadPosts()
+      const el = document.getElementById('posts');
+      if(!posts || posts.length === 0){
+        el.innerHTML = '<p>まだ記事がありません。</p>';
+        return;
+      }
+
+      posts.sort((a,b)=> b.date.localeCompare(a.date));
+
+      posts.forEach(p=>{
+        // build cover HTML with <picture> (webp priority) if p.cover exists
+        let coverHtml = '';
+        if(p.cover){
+          // if cover already .webp -> use it as <source>, and fallback to .jpg
+          if(isWebp(p.cover)){
+            const webp = p.cover;
+            const jpg = webpToJpg(webp);
+            coverHtml = `
+              <div class="card-cover" aria-hidden="false">
+                <picture>
+                  <source type="image/webp" srcset="${webp}">
+                  <img src="${jpg}" alt="${escapeHtml(p.title)}" loading="lazy">
+                </picture>
+              </div>`;
+          } else {
+            // cover is not webp: use it directly (browser may still choose)
+            coverHtml = `
+              <div class="card-cover" aria-hidden="false">
+                <img src="${p.cover}" alt="${escapeHtml(p.title)}" loading="lazy">
+              </div>`;
+          }
         }
-        posts.sort((a,b)=> b.date.localeCompare(a.date));
-        posts.forEach(p=>{
-          const coverHtml = p.cover ? `<div class="card-cover"><img src="${p.cover}" alt="${escapeHtml(p.title)}"></div>` : '';
-          const tagsHtml = (p.tags && p.tags.length) ? `<div class="post-tags">${p.tags.map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join('')}</div>` : '';
-          const html = `
+
+        const tagsHtml = (p.tags && p.tags.length) ? `<div class="post-tags">${p.tags.map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join('')}</div>` : '';
+
+        const html = `
 <article class="post-card">
   ${coverHtml}
   <div class="card-body">
@@ -47,18 +82,14 @@
     ${tagsHtml}
   </div>
 </article>`;
-          el.insertAdjacentHTML('beforeend', html);
-        });
-      }catch(err){
-        console.error('posts load error', err);
-        document.getElementById('posts').innerHTML = '<p>記事の読み込みに失敗しました。</p>';
-      }
 
-      function escapeHtml(s){
-        if(!s) return '';
-        return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-      }
-    })();
+        el.insertAdjacentHTML('beforeend', html);
+      });
+    }catch(err){
+      console.error('posts load error', err);
+      document.getElementById('posts').innerHTML = '<p>記事の読み込みに失敗しました。</p>';
+    }
+  })();
   </script>
 </body>
 </html>

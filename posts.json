@@ -4,7 +4,8 @@
     "url": "/my-blog/posts/2025-08-13-test-post.html",
     "date": "2025-08-13",
     "excerpt": "これは自動化のテスト投稿です。",
-    "cover": "/my-blog/images/2025-08-13-test-cover-800.jpg",
+    "cover": "/my-blog/images/generated/test-sample-800.webp"
+,
     "tags": ["テスト"]
   },
   {
