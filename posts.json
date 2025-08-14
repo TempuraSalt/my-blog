@@ -4,7 +4,7 @@
     "url": "/my-blog/posts/2025-08-13-test-post.html",
     "date": "2025-08-13",
     "excerpt": "これは自動化のテスト投稿です。",
-    "cover": null,
+    "cover": "/my-blog/images/2025-08-13-test-cover-800.jpg",
     "tags": ["テスト"]
   },
   {
@@ -12,7 +12,7 @@
     "url": "/my-blog/posts/2025-08-12-test-action.html",
     "date": "2025-08-12",
     "excerpt": "自動化ワークフローの動作確認用ダミー記事です。",
-    "cover": null,
+    "cover": "/my-blog/images/2025-08-12-test-cover-800.jpg",
     "tags": ["テスト"]
   },
   {
@@ -20,7 +20,7 @@
     "url": "/my-blog/posts/2025-08-11-new-feature.html",
     "date": "2025-08-11",
     "excerpt": "新機能の概要を短く書きます。",
-    "cover":null,
+    "cover": "/my-blog/images/2025-08-11-new-feature-800.jpg",
     "tags": ["更新","機能"]
   },
   {
@@ -28,7 +28,7 @@
     "url": "/my-blog/posts/2025-08-10-my-first-post.html",
     "date": "2025-08-10",
     "excerpt": "サイトのサンプル記事です。",
-    "cover": null,
+    "cover": "/my-blog/images/2025-08-10-cover-800.jpg",
     "tags": ["サンプル","日記"]
   }
 ]

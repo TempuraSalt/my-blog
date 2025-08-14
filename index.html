@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>ブログ</title>
+  <meta name="description" content="個人ブログ。メモや学びをまとめます。">
   <link rel="stylesheet" href="/my-blog/style.css">
   <script src="/my-blog/common.js" defer></script>
 </head>
@@ -11,7 +12,7 @@
   <div id="site-header"></div>
 
   <main class="container">
-    <section class="hero">
+    <section class="hero" aria-hidden="false">
       <p>ここは「ブログ」です。日々のメモや学びをまとめます。</p>
     </section>
 
@@ -23,35 +24,41 @@
   <div id="site-footer"></div>
 
   <script>
-document.addEventListener('DOMContentLoaded', async () => {
-  try {
-    const posts = await loadPosts();
-    const el = document.getElementById('posts');
-    if(!posts || posts.length === 0){
-      el.innerHTML = '<p>まだ記事がありません。</p>';
-      return;
-    }
-    posts.sort((a,b) => b.date.localeCompare(a.date));
-    // index.html のスクリプト部分（抜粋）
-posts.forEach(p=>{
-  const coverHtml = p.cover ? `<div class="card-cover" style="margin-bottom:10px;"><img src="${p.cover}" alt="${p.title}" style="width:100%;height:auto;border-radius:6px;"></div>` : '';
-  const tagsHtml = p.tags && p.tags.length ? `<div class="post-tags">${p.tags.map(t=>`<span class="tag">${t}</span>`).join(' ')}</div>` : '';
-  const html = `
+    // 安全に posts.json を読み込んでカードを描画する
+    (async function(){
+      try{
+        const posts = await loadPosts(); // common.js の loadPosts()
+        const el = document.getElementById('posts');
+        if(!posts || posts.length === 0){
+          el.innerHTML = '<p>まだ記事がありません。</p>';
+          return;
+        }
+        posts.sort((a,b)=> b.date.localeCompare(a.date));
+        posts.forEach(p=>{
+          const coverHtml = p.cover ? `<div class="card-cover"><img src="${p.cover}" alt="${escapeHtml(p.title)}"></div>` : '';
+          const tagsHtml = (p.tags && p.tags.length) ? `<div class="post-tags">${p.tags.map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join('')}</div>` : '';
+          const html = `
 <article class="post-card">
   ${coverHtml}
-  <h3><a href="${p.url}">${p.title}</a></h3>
-  <div class="post-meta">${p.date}</div>
-  <p>${p.excerpt || ''}</p>
-  ${tagsHtml}
+  <div class="card-body">
+    <h3><a href="${p.url}">${escapeHtml(p.title)}</a></h3>
+    <div class="post-meta">${escapeHtml(p.date)}</div>
+    <p>${escapeHtml(p.excerpt || '')}</p>
+    ${tagsHtml}
+  </div>
 </article>`;
-  el.insertAdjacentHTML('beforeend', html);
-});
+          el.insertAdjacentHTML('beforeend', html);
+        });
+      }catch(err){
+        console.error('posts load error', err);
+        document.getElementById('posts').innerHTML = '<p>記事の読み込みに失敗しました。</p>';
+      }
 
-  } catch (err) {
-    console.error('posts load error', err);
-    document.getElementById('posts').innerHTML = '<p>記事の読み込みに失敗しました。</p>';
-  }
-});
-</script>
+      function escapeHtml(s){
+        if(!s) return '';
+        return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+      }
+    })();
+  </script>
 </body>
 </html>
