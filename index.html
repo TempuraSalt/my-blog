@@ -6,72 +6,84 @@
   <title>ブログ</title>
   <meta name="description" content="個人ブログ。メモや学びをまとめます。">
   <link rel="stylesheet" href="/my-blog/style.css" />
+  <!-- common.js は defer のまま読み込む（ただしここで存在確認を行います） -->
   <script src="/my-blog/common.js" defer></script>
+  <style>
+    /* 簡単なデバッグ表示用スタイル */
+    .debug-box{background:#fff3f3;color:#900;padding:12px;border-radius:8px;margin:12px 0;font-family:monospace;white-space:pre-wrap}
+    .ok-box{background:#f3fff7;color:#064;padding:12px;border-radius:8px;margin:12px 0;font-family:monospace;white-space:pre-wrap}
+  </style>
 </head>
 <body>
   <div id="site-header"></div>
 
   <main class="container">
-    <section class="hero" aria-hidden="false">
+    <section class="hero">
       <p>ここは「ブログ」です。日々のメモや学びをまとめます。</p>
     </section>
 
     <section id="posts" class="posts" aria-label="記事一覧">
-      <!-- JavaScript でここを埋める -->
+      <!-- JavaScriptで埋める -->
     </section>
+
+    <!-- デバッグ表示領域 -->
+    <section id="debug" aria-hidden="false"></section>
   </main>
 
   <div id="site-footer"></div>
 
   <script>
-  // helper: escape HTML to avoid XSS when inserting text from posts.json
-  function escapeHtml(s){
-    if(!s) return '';
-    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
+  // ヘルパー
+  function escapeHtml(s){ if(!s) return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-  // returns true if string ends with .webp (case-insensitive)
-  function isWebp(p){ return /\.webp$/i.test(p); }
-  // returns jpg fallback path for a given webp path (replace .webp -> .jpg)
-  function webpToJpg(p){ return p.replace(/\.webp$/i, '.jpg'); }
+  // デバッグ出力（画面表示）
+  function dbg_ok(msg){ const d=document.getElementById('debug'); d.insertAdjacentHTML('beforeend','<div class="ok-box">'+escapeHtml(msg)+'</div>'); }
+  function dbg_err(msg){ const d=document.getElementById('debug'); d.insertAdjacentHTML('beforeend','<div class="debug-box">'+escapeHtml(msg)+'</div>'); }
 
   (async function(){
     try{
-      const posts = await loadPosts(); // common.js の loadPosts()
-      const el = document.getElementById('posts');
-      if(!posts || posts.length === 0){
-        el.innerHTML = '<p>まだ記事がありません。</p>';
+      // 1) 簡単な存在チェック：common.js が定義している loadPosts 関数
+      dbg_ok('Checking if loadPosts() is defined...');
+      if(typeof loadPosts !== 'function'){
+        dbg_err('loadPosts is NOT defined (common.js did not execute or not loaded).');
+        // 追加で common.js と posts.json を fetch してステータスを表示する（詳しい原因を得るため）
+        try{
+          const r1 = await fetch('/my-blog/common.js', {cache: "no-store"});
+          dbg_ok('Fetch /my-blog/common.js -> status: ' + r1.status + ' ' + r1.statusText);
+          const txt = await r1.text();
+          dbg_ok('common.js first 300 chars:\\n' + txt.slice(0,300).replace(/\n/g,'\\n'));
+        }catch(e){
+          dbg_err('Fetch /my-blog/common.js failed: ' + e);
+        }
+        try{
+          const r2 = await fetch('/my-blog/posts.json', {cache: "no-store"});
+          dbg_ok('Fetch /my-blog/posts.json -> status: ' + r2.status + ' ' + r2.statusText);
+          const txt2 = await r2.text();
+          dbg_ok('posts.json first 400 chars:\\n' + txt2.slice(0,400).replace(/\n/g,'\\n'));
+        }catch(e){
+          dbg_err('Fetch /my-blog/posts.json failed: ' + e);
+        }
+        // 無理に続けずここで終了（原因特定後に loadPosts が使えるようにする）
         return;
+      } else {
+        dbg_ok('loadPosts() is defined.');
       }
 
+      // 2) 正常系: loadPosts を呼んで posts を描画する
+      dbg_ok('Calling loadPosts()...');
+      const posts = await loadPosts();
+      if(!posts || posts.length === 0){
+        document.getElementById('posts').innerHTML = '<p>まだ記事がありません。</p>';
+        dbg_ok('loadPosts returned empty array or null.');
+        return;
+      }
+      dbg_ok('loadPosts returned ' + posts.length + ' posts. Rendering...');
       posts.sort((a,b)=> b.date.localeCompare(a.date));
 
+      const el = document.getElementById('posts');
       posts.forEach(p=>{
-        // build cover HTML with <picture> (webp priority) if p.cover exists
-        let coverHtml = '';
-        if(p.cover){
-          // if cover already .webp -> use it as <source>, and fallback to .jpg
-          if(isWebp(p.cover)){
-            const webp = p.cover;
-            const jpg = webpToJpg(webp);
-            coverHtml = `
-              <div class="card-cover" aria-hidden="false">
-                <picture>
-                  <source type="image/webp" srcset="${webp}">
-                  <img src="${jpg}" alt="${escapeHtml(p.title)}" loading="lazy">
-                </picture>
-              </div>`;
-          } else {
-            // cover is not webp: use it directly (browser may still choose)
-            coverHtml = `
-              <div class="card-cover" aria-hidden="false">
-                <img src="${p.cover}" alt="${escapeHtml(p.title)}" loading="lazy">
-              </div>`;
-          }
-        }
-
+        const coverHtml = p.cover ? `<div class="card-cover"><picture><source type="image/webp" srcset="${p.cover}"><img src="${p.cover.replace(/\.webp$/i,'.jpg')}" alt="${escapeHtml(p.title)}" loading="lazy"></picture></div>` : '';
         const tagsHtml = (p.tags && p.tags.length) ? `<div class="post-tags">${p.tags.map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join('')}</div>` : '';
-
         const html = `
 <article class="post-card">
   ${coverHtml}
@@ -82,12 +94,23 @@
     ${tagsHtml}
   </div>
 </article>`;
-
         el.insertAdjacentHTML('beforeend', html);
       });
+
     }catch(err){
       console.error('posts load error', err);
-      document.getElementById('posts').innerHTML = '<p>記事の読み込みに失敗しました。</p>';
+      // 見やすく画面に出す
+      const el = document.getElementById('posts');
+      el.innerHTML = '<pre style="color:#c00;background:#fff3f3;padding:12px;border-radius:6px;">読み込みエラー:\\n' + escapeHtml(String(err)) + '\\n\\n詳細は下のデバッグ情報を参照してください。</pre>';
+      dbg_err('Caught exception: ' + String(err));
+      try{
+        const r = await fetch('/my-blog/posts.json', {cache:"no-store"});
+        dbg_ok('posts.json fetch status: ' + r.status + ' ' + r.statusText);
+        const txt = await r.text();
+        dbg_ok('posts.json content preview:\\n' + txt.slice(0,400).replace(/\n/g,'\\n'));
+      }catch(e){
+        dbg_err('Fetch posts.json in catch failed: ' + e);
+      }
     }
   })();
   </script>
