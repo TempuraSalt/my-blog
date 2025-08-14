@@ -1,0 +1,48 @@
+name: Image optimize
+
+on:
+  push:
+    paths:
+      - 'images/**'
+
+permissions:
+  contents: write
+
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Install ImageMagick
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y imagemagick webp
+
+      - name: Create output dir
+        run: mkdir -p images/generated
+
+      - name: Resize and create webp
+        run: |
+          shopt -s nullglob
+          for f in images/*.{jpg,jpeg,png}; do
+            fname=$(basename "$f")
+            name="${fname%.*}"
+            # create 400, 800, 1200 variants if original large enough
+            convert "$f" -auto-orient -strip -resize 400x400\> "images/generated/${name}-400.jpg"
+            convert "$f" -auto-orient -strip -resize 800x800\> "images/generated/${name}-800.jpg"
+            convert "$f" -auto-orient -strip -resize 1200x1200\> "images/generated/${name}-1200.jpg"
+            # webp
+            cwebp -q 80 "images/generated/${name}-800.jpg" -o "images/generated/${name}-800.webp" || true
+          done
+
+      - name: Commit optimized images
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git add images/generated || true
+          git commit -m "chore: add optimized images" || echo "No changes to commit"
+          git push

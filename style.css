@@ -4,33 +4,154 @@
   --muted:#6b7280;
   --bg:#f7f8fa;
   --card:#ffffff;
+  --text:#111;
+  --radius:12px;
 }
-html{background:var(--bg);height:100%;}
+
+/* Reset-ish */
+*{box-sizing:border-box}
+html{background:var(--bg);height:100%}
 body{
   margin:0;
-  font-family:"Noto Sans JP", "Hiragino Kaku Gothic Pro", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-  color:#111;
+  font-family:"Noto Sans JP","Hiragino Kaku Gothic Pro",system-ui,-apple-system,"Segoe UI",Roboto,Arial;
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
   min-height:100vh;
 }
+
+/* Layout */
 .container{
   max-width:var(--max-width);
   margin:0 auto;
   padding:28px 18px;
 }
-.site-header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:8px 0 18px 0}
-.site-title{font-weight:700;font-size:1.25rem;margin:0}
-.site-nav a{color:var(--accent);text-decoration:none;margin-left:14px;font-weight:600}
-.site-nav a:hover{text-decoration:underline}
-.hero{background:linear-gradient(180deg, rgba(11,114,195,0.06), transparent);border-radius:10px;padding:16px;margin-bottom:18px}
-.posts{display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:28px}
-.post-card{background:var(--card);padding:16px;border-radius:10px;box-shadow:0 6px 18px rgba(12,30,50,0.04);border:1px solid rgba(10,10,10,0.03)}
-.post-card h3{margin:0 0 8px 0;font-size:1.1rem}
-.post-meta{color:var(--muted);font-size:0.9rem;margin-bottom:8px}
-.post-body{line-height:1.85;font-size:1rem}
-.post-body img{max-width:100%;height:auto;border-radius:6px}
-.site-footer{text-align:center;color:var(--muted);font-size:0.9rem;margin-top:36px;padding-top:18px;border-top:1px solid rgba(0,0,0,0.04)}
-@media(min-width:900px){.posts{grid-template-columns:1fr 1fr}}
-@media(max-width:480px){.container{padding:14px}.site-title{font-size:1.05rem}}
-.card-cover img{ display:block; width:100%; height:auto; border-radius:8px; }
-.post-tags { margin-top:8px; }
-.tag { display:inline-block; background:#eef4ff; color:var(--accent); padding:4px 8px; border-radius:999px; font-size:0.85rem; margin-right:6px; }
+
+/* Header / nav */
+.site-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:8px 0 18px;
+}
+.site-title{
+  font-weight:700;
+  font-size:1.35rem;
+  margin:0;
+}
+.site-nav a{
+  color:var(--accent);
+  text-decoration:none;
+  margin-left:14px;
+  font-weight:600;
+}
+.site-nav a:hover{ text-decoration:underline }
+
+/* Hero */
+.hero{
+  background:linear-gradient(180deg, rgba(11,114,195,0.06), transparent);
+  border-radius:10px;
+  padding:16px;
+  margin-bottom:18px;
+}
+
+/* Posts grid */
+.posts{
+  display:grid;
+  gap:18px;
+  grid-template-columns: 1fr;
+  margin-bottom:28px;
+}
+@media(min-width:900px){
+  .posts{ grid-template-columns: 1fr 1fr; }
+}
+
+/* Card */
+.post-card{
+  background: var(--card);
+  border-radius: var(--radius);
+  overflow:hidden;
+  border: 1px solid rgba(10,10,10,0.04);
+  box-shadow: 0 8px 22px rgba(12,30,50,0.06);
+  transition: transform .18s ease, box-shadow .18s ease;
+  display:flex;
+  flex-direction:column;
+}
+.post-card:hover{
+  transform: translateY(-6px);
+  box-shadow: 0 14px 36px rgba(12,30,50,0.08);
+}
+
+/* Cover image */
+.card-cover img{
+  width:100%;
+  height:auto;
+  display:block;
+  object-fit:cover;
+}
+
+/* Card body */
+.card-body{
+  padding:16px;
+  flex:1;
+  display:flex;
+  flex-direction:column;
+}
+.post-card h3{
+  margin:0 0 6px 0;
+  font-size:1.12rem;
+  line-height:1.25;
+}
+.post-meta{
+  color:var(--muted);
+  font-size:0.9rem;
+  margin-bottom:10px;
+}
+.post-card p{
+  margin:0 0 12px 0;
+  color:#333;
+  flex:0 0 auto;
+}
+
+/* Tags */
+.post-tags{ margin-top:auto; }
+.tag{
+  display:inline-block;
+  background:#eef6ff;
+  color:var(--accent);
+  padding:4px 8px;
+  border-radius:999px;
+  font-size:0.82rem;
+  margin-right:8px;
+}
+
+/* Article page */
+.post-body{
+  line-height:1.9;
+  font-size:1rem;
+  color:#222;
+}
+.post-body img{ max-width:100%; height:auto; border-radius:6px; }
+
+/* Footer */
+.site-footer{
+  text-align:center;
+  color:var(--muted);
+  font-size:0.9rem;
+  margin-top:36px;
+  padding-top:18px;
+  border-top:1px solid rgba(0,0,0,0.04);
+}
+
+/* Utilities */
+a{color:var(--accent)}
+a:hover{text-decoration:underline}
+
+/* Small screens tweaks */
+@media(max-width:480px){
+  .container{ padding:14px }
+  .site-title{ font-size:1.05rem }
+  .card-body{ padding:12px; }
+  .post-card{ border-radius:10px }
+}
