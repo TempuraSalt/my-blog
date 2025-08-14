@@ -32,15 +32,21 @@ document.addEventListener('DOMContentLoaded', async () => {
       return;
     }
     posts.sort((a,b) => b.date.localeCompare(a.date));
-    posts.forEach(p => {
-      const html = `
+    // index.html のスクリプト部分（抜粋）
+posts.forEach(p=>{
+  const coverHtml = p.cover ? `<div class="card-cover" style="margin-bottom:10px;"><img src="${p.cover}" alt="${p.title}" style="width:100%;height:auto;border-radius:6px;"></div>` : '';
+  const tagsHtml = p.tags && p.tags.length ? `<div class="post-tags">${p.tags.map(t=>`<span class="tag">${t}</span>`).join(' ')}</div>` : '';
+  const html = `
 <article class="post-card">
+  ${coverHtml}
   <h3><a href="${p.url}">${p.title}</a></h3>
   <div class="post-meta">${p.date}</div>
   <p>${p.excerpt || ''}</p>
+  ${tagsHtml}
 </article>`;
-      el.insertAdjacentHTML('beforeend', html);
-    });
+  el.insertAdjacentHTML('beforeend', html);
+});
+
   } catch (err) {
     console.error('posts load error', err);
     document.getElementById('posts').innerHTML = '<p>記事の読み込みに失敗しました。</p>';

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>記事タイトル - ブログ</title>
+
+  <!-- SEO / metadata (generate_posts_json.js がこれらを読む) -->
+  <meta name="description" content="この記事の短い説明（excerpt）">
+  <meta name="date" content="2025-08-14">
+  <meta name="tags" content="タグ1,タグ2">
+  <meta name="cover" content="/my-blog/images/2025-08-14-cover.jpg">
+
+  <!-- OGP / SNS用（あれば） -->
+  <meta property="og:title" content="記事タイトル - ブログ">
+  <meta property="og:description" content="この記事の短い説明">
+  <meta property="og:image" content="/my-blog/images/2025-08-14-cover.jpg">
+
+  <link rel="stylesheet" href="/my-blog/style.css">
+  <script src="/my-blog/common.js" defer></script>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="container">
+    <article class="post-card">
+      <h1>記事タイトル</h1>
+      <div class="post-meta">2025-08-14 · タグ: <span class="tags">タグ1, タグ2</span></div>
+
+      <!-- カバー画像（レスポンシブ） -->
+      <figure>
+        <img
+          src="/my-blog/images/2025-08-14-cover-800.jpg"
+          srcset="/my-blog/images/2025-08-14-cover-400.jpg 400w, /my-blog/images/2025-08-14-cover-800.jpg 800w, /my-blog/images/2025-08-14-cover-1200.jpg 1200w"
+          sizes="(max-width: 600px) 100vw, 800px"
+          alt="記事のサムネイル説明"
+          style="width:100%;height:auto;border-radius:6px;">
+        <figcaption style="font-size:0.9rem;color:#666;margin-top:6px;">画像説明（省略可）</figcaption>
+      </figure>
+
+      <div class="post-body">
+        <p>本文はここに書きます。段落ごとに &lt;p&gt; を使ってください。</p>
+        <p>画像は /my-blog/images/ 以下に置いて相対パスで指定します。</p>
+      </div>
+    </article>
+
+    <p><a href="/my-blog/">← 記事一覧に戻る</a></p>
+  </main>
+
+  <div id="site-footer"></div>
+</body>
+</html>
