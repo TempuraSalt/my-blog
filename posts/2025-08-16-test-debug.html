@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>テスト（デバッグ用） — ブログ</title>
+
+  <!-- 管理用メタ -->
+  <meta name="description" content="画像とワークフローのデバッグ用に作成したテスト記事です。">
+  <meta name="date" content="2025-08-16">
+  <meta name="tags" content="debug,test,images">
+
+  <meta property="og:title" content="テスト（デバッグ用） - ブログ">
+  <meta property="og:description" content="画像ロードや posts.json の挙動を検証するためのデバッグ記事です。">
+  <meta property="og:image" content="/my-blog/images/test-sample-image.jpg">
+
+  <link rel="stylesheet" href="/my-blog/style.css">
+  <script src="/my-blog/common.js" defer></script>
+
+  <style>
+    /* 小さなデバッグ用スタイル（ページ内で目立つように） */
+    .dbg { background:#fff9e6; border:1px solid #f0d28a; padding:12px; border-radius:8px; margin:12px 0; font-family:monospace; white-space:pre-wrap; color:#222 }
+    .img-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin:12px 0; }
+    .img-grid img{ width:100%; height:auto; border-radius:8px; display:block; }
+    .ok { color: #0a7a24; font-weight:600 }
+    .bad { color: #c62828; font-weight:700 }
+  </style>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="container">
+    <article class="post-card">
+      <h1>テスト（デバッグ用） — 画像とワークフローの確認</h1>
+      <div class="post-meta">2025-08-16</div>
+
+      <div class="post-body">
+        <p>
+          このページは、サイト上で画像が表示されない問題や posts.json／ワークフローの副作用を調査するために作ったテスト記事です。指定された画像をページに直接貼り、さらにブラウザから fetch で状態を確認する簡易的なデバッグロジックを組み込みました。ページを開いたら、下に並ぶ「画像プレビュー」と「ロード結果」を確認してください。
+        </p>
+
+        <p>
+          目的は単純です：ブラウザが実際にどの URL にアクセスし、どのステータスが返っているか（200 / 404 等）を可視化すること。そして、DOM に挿入された &lt;img&gt; 要素が onload / onerror をどう受け取るかを確認します。これにより「記事ページだけで画像が消える」タイプの問題（パスの不一致、.webp フォールバックの失敗、CSP/混在コンテンツやキャッシュの影響など）を切り分けられます。
+        </p>
+
+        <h3>テスト画像（指定の3枚）</h3>
+        <div class="img-grid" id="img-grid">
+          <!-- 画像は JavaScript 側でも同じ URL を検証します -->
+          <figure>
+            <img id="img1" src="/my-blog/images/food_bunka_fry.jpg" alt="food_bunka_fry" loading="lazy" onerror="this.dataset.error='error'">
+            <figcaption style="font-size:0.9rem;color:#666;margin-top:6px;">food_bunka_fry.jpg</figcaption>
+          </figure>
+
+          <figure>
+            <img id="img2" src="/my-blog/images/food_za-sai.png" alt="food_za-sai" loading="lazy" onerror="this.dataset.error='error'">
+            <figcaption style="font-size:0.9rem;color:#666;margin-top:6px;">food_za-sai.png</figcaption>
+          </figure>
+
+          <figure>
+            <img id="img3" src="/my-blog/images/test-sample-image.jpg" alt="test-sample-image" loading="lazy" onerror="this.dataset.error='error'">
+            <figcaption style="font-size:0.9rem;color:#666;margin-top:6px;">test-sample-image.jpg</figcaption>
+          </figure>
+        </div>
+
+        <h3>自動チェック結果（fetch & イメージオブジェクト）</h3>
+        <div id="debug-results" class="dbg">実行中…</div>
+
+        <p>
+          テスト手順（簡潔）：
+          <ol>
+            <li>ページを開く（Ctrl+F5 で強制リロード）</li>
+            <li>このページの「自動チェック結果」とブラウザ DevTools の Network / Console を確認</li>
+            <li>fetch が 200 を返すのに &lt;img&gt; がエラーになる場合は、CSS 非表示や onerror、CSP 等を疑う</li>
+            <li>fetch が 404 を返す場合は、リポジトリにファイルが無いか参照パスが間違っています（GitHub 上の images/ を確認）</li>
+          </ol>
+        </p>
+
+        <h3>追加メモ（デバッグ用）</h3>
+        <p>
+          このページで行っているチェックは完全ではありませんが、問題の切り分けに非常に役立ちます。必要ならここにさらに「posts.json の中身を取得して該当エントリを表示」するコードや、「common.js の読み込み状態を表示」する行を追加します。今はまず、この3枚の画像がブラウザで正常に取得できるかを確認してください。
+        </p>
+
+      </div>
+    </article>
+
+    <p><a href="/my-blog/">← 記事一覧に戻る</a></p>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script>
+    // デバッグスクリプト：fetch でステータスを確認し、Image() で onload/onerror を計測する
+    (async function(){
+      const out = document.getElementById('debug-results');
+      const images = [
+        '/my-blog/images/food_bunka_fry.jpg',
+        '/my-blog/images/food_za-sai.png',
+        '/my-blog/images/test-sample-image.jpg'
+      ];
+
+      function appendLine(s){
+        out.textContent += '\\n' + s;
+      }
+      out.textContent = '開始: ' + new Date().toLocaleString();
+
+      for(const url of images){
+        appendLine('\\n--- チェック: ' + url + ' ---');
+
+        // 1) fetch でヘッダを確認（GET）
+        try{
+          const r = await fetch(url, { cache: "no-store" });
+          appendLine('fetch -> status: ' + r.status + ' ' + r.statusText + (r.ok ? ' (OK)' : ' (NG)'));
+          // optionally read small portion? avoid heavy download
+        }catch(e){
+          appendLine('fetch -> exception: ' + e.message);
+        }
+
+        // 2) Image オブジェクトで実際の読み込みを検証
+        await new Promise(resolve=>{
+          const img = new Image();
+          let settled = false;
+          img.onload = function(){ appendLine('Image() -> onload OK'); if(!settled){ settled=true; resolve(); } };
+          img.onerror = function(){ appendLine('Image() -> onerror'); if(!settled){ settled=true; resolve(); } };
+          img.src = url + (url.indexOf('?') === -1 ? '?_dbg=' + Date.now() : '&_dbg=' + Date.now());
+          // timeout fallback
+          setTimeout(()=>{ if(!settled){ appendLine('Image() -> timeout'); settled=true; resolve(); } }, 5000);
+        });
+
+        // 3) check existing <img> element (if present) dataset.error
+        const el = document.querySelector('img[src="'+url+'"]');
+        if(el){
+          if(el.dataset.error) appendLine('DOM <img> has onerror flag (already fired)');
+          else appendLine('DOM <img> shows no onerror flag (not yet errored)');
+        } else {
+          appendLine('DOM <img> not found for this URL on the page');
+        }
+      }
+
+      appendLine('\\nチェック完了: ' + new Date().toLocaleString());
+    })();
+  </script>
+</body>
+</html>
