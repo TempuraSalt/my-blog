@@ -3,19 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>テスト再現：デバッグ用記事 — ブログ</title>
+  <title>デバッグ再現：2025-08-16 テスト記事 — ブログ</title>
 
-  <!-- メタ（自動生成スクリプトで読み取りやすいように） -->
-  <meta name="description" content="2025-08-15 作成時の状況を再現するためのデバッグ記事（画像挙動の再現実験用）。">
+  <!-- 自動生成スクリプトが読み取りやすいメタ -->
+  <meta name="description" content="2025-08-15 の状況を再現するためのテスト記事。画像読み込みと posts.json の影響を検証します。">
   <meta name="date" content="2025-08-16">
-  <meta name="tags" content="debug,test,repro">
+  <meta name="tags" content="debug, repro, images">
 
-  <!-- カバーはトップ一覧で使われる想定 -->
+  <!-- *カバーはトップ表示で使われる想定の meta（重要）* -->
   <meta name="cover" content="/my-blog/images/food_bunka_fry.jpg">
 
-  <!-- OGP -->
-  <meta property="og:title" content="テスト再現：デバッグ用記事">
-  <meta property="og:description" content="画像の読み込み状況や自動化挙動を再現・観察するためのテスト記事です。">
+  <meta property="og:title" content="デバッグ再現：2025-08-16 テスト記事">
+  <meta property="og:description" content="画像読み込みと自動化の副作用を検証するためのテスト記事です。">
   <meta property="og:image" content="/my-blog/images/food_bunka_fry.jpg">
 
   <link rel="stylesheet" href="/my-blog/style.css">
@@ -26,75 +25,75 @@
 
   <main class="container">
     <article class="post-card">
-      <h1>テスト再現：デバッグ用記事</h1>
+      <h1>デバッグ再現：2025-08-16 テスト記事</h1>
       <div class="post-meta">2025-08-16</div>
 
-      <!-- カバー：pictureでwebpをsourceに置いてフォールバックを試す（webpが無ければ404が出るが img にフォールバックされるはず） -->
+      <!-- カバー（.webp を source にして .jpg をフォールバック）-->
       <figure>
         <picture>
-          <!-- intentionally reference .webp (may not exist) to reproduce the "missing webp" condition -->
+          <!-- 敢えて .webp を参照（存在しない可能性がある） -->
           <source type="image/webp" srcset="/my-blog/images/food_bunka_fry.webp">
           <img src="/my-blog/images/food_bunka_fry.jpg"
-               alt="フライのイメージ（デバッグ用カバー）"
+               alt="フライ料理（デバッグ用カバー）"
                loading="lazy"
                style="width:100%;height:auto;border-radius:6px;">
         </picture>
-        <figcaption style="font-size:0.9rem;color:#666;margin-top:6px;">（デバッグ）カバー画像：food_bunka_fry</figcaption>
+        <figcaption style="font-size:0.9rem;color:#666;margin-top:6px;">デバッグ用カバー：food_bunka_fry</figcaption>
       </figure>
 
       <div class="post-body">
         <p>
-          このページは、2025-08-15 に作成した記事とできるだけ近い条件を再現するために作られたデバッグ用の記事です。目的は「新しい記事追加→自動化ワークフロー実行→既存のサムネイルやカバー挙動に何らかの副作用が出るか」を観察することにあります。読み物としては控えめに、しかし検証を正確に行えるよう構成しています。
+          目的は、2025-08-15 に発生した現象を再現し、次の 2 点の原因究明を行うことです：
+        </p>
+        <ol>
+          <li>更新した記事（新規または更新）の本文中の画像が表示されなくなる原因</li>
+          <li>その更新操作の後、既存の記事（更新対象以外）のトップサムネイルが消える原因</li>
+        </ol>
+
+        <p>
+          本記事は 2025-08-15 の記事と同じ **構造**（head の meta、カバーの `<picture>` パターン、common.js の include）を持たせています。ただし本文は検証用に短くまとめています。これにより「記事追加→ワークフロー実行→副作用が出るか」を対照的に比較できます。
         </p>
 
         <p>
-          最初に行ったことは、記事ヘッダーに `<meta name="cover">` を入れることです。これにより、現行の自動生成スクリプトが記事内メタを読み取る場合と読み取らない場合の差を比較できます。トップの一覧に表示されるサムネイルは `posts.json` の `cover` フィールドを基にしている可能性が高いので、記事内メタと posts.json の整合性を確認する意味も兼ねています。
+          次に本文内の画像を順に配置します。ここで重要なのは、カバー同様に一部の `<picture>` では `.webp` を `source` に指定している点です（.webp が無ければ Network に 404 が出るはず）。また、通常の PNG/JPG は直接 `<img>` として挿入します。
         </p>
 
-        <p>
-          次に、本文中で使う画像を 3 枚すべて明示的に挿入しました。まずはこの `food_bunka_fry.jpg`（上のカバーと同じ画像）、次に `food_za-sai.png`、そして `test-sample-image.jpg` を順にレイアウトに組み込みます。ブラウザの Network タブで .webp のリクエストが 404 になる一方で、フォールバック画像がロードされるかを確認してください。
-        </p>
-
-        <p>
-          ここからは実験的な観察のための短いメモです。よくある現象として、ページの `<picture>` に `.webp` を書き、`.webp` がサーバに無いと Network に 404 が残りますが、通常はすぐに `<img>` にフォールバックするはずです。もしフォールバックが機能せず画像自体が表示されない場合は、`posts.json` の参照先が間違っているか、ページ内のパス（サブパス `/my-blog/` の扱い）が不一致になっている可能性が高いです。
-        </p>
-
-        <p>
-          それでは本文内に画像を表示します。下の画像はすべてリポジトリの `images/` フォルダを参照しています。Network と Console のログを一緒に確認してください（特に 404 / Content-Type / CSP 関連の警告に注目）。
-        </p>
-
-        <!-- 画像1: food_bunka_fry (繰り返し) -->
-        <figure style="margin:18px 0;">
-          <img src="/my-blog/images/food_bunka_fry.jpg" alt="フライ料理の例" loading="lazy" style="width:100%;height:auto;border-radius:6px;">
-          <figcaption style="font-size:0.9rem;color:#666;margin-top:6px;">food_bunka_fry.jpg — カバーと同じ画像（デバッグ確認用）。</figcaption>
-        </figure>
-
-        <!-- 画像2: food_za-sai -->
+        <!-- 画像1: food_bunka_fry -->
         <figure style="margin:18px 0;">
           <picture>
-            <!-- png has no webp alt here, use img directly for png -->
-            <img src="/my-blog/images/food_za-sai.png" alt="ザーサイのイメージ" loading="lazy" style="width:100%;height:auto;border-radius:6px;">
+            <source type="image/webp" srcset="/my-blog/images/food_bunka_fry.webp">
+            <img src="/my-blog/images/food_bunka_fry.jpg" alt="food_bunka_fry" loading="lazy" style="width:100%;height:auto;border-radius:6px;">
           </picture>
-          <figcaption style="font-size:0.9rem;color:#666;margin-top:6px;">food_za-sai.png — PNG の挿入例。</figcaption>
+          <figcaption style="font-size:0.9rem;color:#666;margin-top:6px;">food_bunka_fry.jpg — カバーと同じ画像（再現検証用）。</figcaption>
+        </figure>
+
+        <!-- 画像2: food_za-sai (PNG) -->
+        <figure style="margin:18px 0;">
+          <img src="/my-blog/images/food_za-sai.png" alt="food_za-sai" loading="lazy" style="width:100%;height:auto;border-radius:6px;">
+          <figcaption style="font-size:0.9rem;color:#666;margin-top:6px;">food_za-sai.png — PNG の直接挿入。</figcaption>
         </figure>
 
         <!-- 画像3: test-sample-image -->
         <figure style="margin:18px 0;">
           <picture>
             <source type="image/webp" srcset="/my-blog/images/test-sample-image.webp">
-            <img src="/my-blog/images/test-sample-image.jpg" alt="テストサンプル画像" loading="lazy" style="width:100%;height:auto;border-radius:6px;">
+            <img src="/my-blog/images/test-sample-image.jpg" alt="test-sample-image" loading="lazy" style="width:100%;height:auto;border-radius:6px;">
           </picture>
-          <figcaption style="font-size:0.9rem;color:#666;margin-top:6px;">test-sample-image.jpg — 最後の確認用画像。</figcaption>
+          <figcaption style="font-size:0.9rem;color:#666;margin-top:6px;">test-sample-image.jpg — 検証用ラスト。</figcaption>
         </figure>
 
         <p>
-          ここに書かれた文章は実験目的のためのランディングであり、内容の芸術性より再現性を優先しています。実験を行う際は、ページを開いたあとに Network タブをクリアしてから再読み込み（Ctrl+F5）して、発生したリクエストがどの順序で来ているか、どれが 404 になるか、どのリクエストが成功するかを観察してください。
+          対照実験の手順（簡易）：
+          <ol>
+            <li>このファイルを push → Actions トリガーで generate_posts_json が走る（既設のワークフローがある前提）</li>
+            <li>ワークフロー実行後に posts.json の該当エントリ（cover）と images/ フォルダの状態を確認</li>
+            <li>トップ（/my-blog/）と本ページを開き、Network と Console を比較（特に .webp の 404、.jpg/.png の 200、posts.json の cover 値）</li>
+          </ol>
         </p>
 
         <p>
-          実験が終わったら、その時点の `posts.json` の該当エントリと Actions の最新ログ（Run の履歴）を一緒に貼ってください。両者を合わせて見ることで「自動化が posts.json を書き換えたのか」「画像が消えたのはファイル欠落なのか」「あるいは path の不一致（/my-blog/ の有無など）なのか」を断定できます。準備が整ったらお知らせください — 私がログを解析して次の手順を出します。
+          実験結果を得たらそのまま結果を共有してください。私がログ（Actions / posts.json の履歴 / Network のレスポンス）を解析して、どのステップで cover が消えたり画像が表示されなくなったかを突き止めます。
         </p>
-
       </div>
     </article>
 
