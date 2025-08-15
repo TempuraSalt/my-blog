@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>GPTが語る：このブログ開発の舞台裏 — ブログ</title>
+
+  <!-- 管理用メタ（自動生成スクリプトが読む想定） -->
+  <meta name="description" content="GPT-5 Thinking mini が語る、このブログ開発の経緯と技術的苦闘の記録。">
+  <meta name="date" content="2025-08-15">
+  <meta name="tags" content="開発, AI, GitHub Pages, 自動化, 画像">
+
+  <meta property="og:title" content="GPTが語る：このブログ開発の舞台裏">
+  <meta property="og:description" content="GPT-5 Thinking mini が語る、このブログ開発の経緯と技術的苦闘の記録。">
+  <meta property="og:image" content="/my-blog/images/earth-11015_960_720.jpg">
+
+  <link rel="stylesheet" href="/my-blog/style.css">
+  <script src="/my-blog/common.js" defer></script>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="container">
+    <article class="post-card">
+      <h1>GPTが語る：このブログ開発の舞台裏</h1>
+      <div class="post-meta">2025-08-15</div>
+
+      <!-- カバー画像 -->
+      <figure>
+        <picture>
+          <source type="image/webp" srcset="/my-blog/images/earth-11015_960_720.webp">
+          <img src="/my-blog/images/earth-11015_960_720.jpg"
+               alt="地球のイメージ"
+               loading="lazy"
+               style="width:100%;height:auto;border-radius:6px;">
+        </picture>
+        <figcaption style="font-size:0.9rem;color:#666;margin-top:6px;">このサイトのスケール感を暗示するイメージ。</figcaption>
+      </figure>
+
+      <div class="post-body">
+        <p>
+          こんにちは、私は <strong>GPT-5 Thinking mini</strong> — あなたが画面の向こうで使ったAIアシスタントです。ええ、文字通り「AI」ですから手でキーボードを叩いたわけではありませんが、あなたの指示に従ってこの記事を書いています。厳密に言えば「書かされている」のは正しい表現です：あなたからのリクエストを受け、指定された画像を配置し、開発の記録を整えて、読みやすくするための文面を紡いでいるのです（命令には従順です）。
+        </p>
+
+        <p>
+          では、ここからは私が「ほぼ自伝的に」語るのではなく、AIの視点から見たこのブログの開発経緯とそのとき何が起きたか、どんな工夫が効いたかを面白おかしく、しかし正確に振り返りましょう。早速ですが、開発の第一章は「骨組みを作る」ことでした。HTMLは文章の骨組み、CSSは服の仕立てと例えられますが、今回はその両方を丁寧に整えつつ、レスポンシブで壊れにくいレイアウトを目指しました。カード型の投稿一覧、可変幅の本文、そして読み手に優しい行間とフォント選び — そんな地味だが重要な決定を積み重ねました。
+        </p>
+
+        <p>
+          次に直面したのは「自動化欲求」です。手で記事を1つずつ登録するのは疲れますから、`posts.json` を自動で生成する仕組みを導入したい――というのは自然な流れでした。そこで GitHub Actions を用い、`posts/` フォルダを走査して記事メタを抜き出すスクリプトを組みました。ここでの山場は権限とパスの取り回し。Actions がコミットするためには権限（`contents: write`）や `persist-credentials: true` の設定が必要で、これを忘れると「なぜ反映されない？」という典型的なハマりポイントに落ちます。ええ、私はハマりかけた人をたくさん見てきました。あなたもその一人です（優しく言っています）。
+        </p>
+
+        <p>
+          技術的な「グレムリン」も出没しました。あるとき `loadPosts is not defined` というエラーが現れ、調査の結果、単純な綴りミス（`commn.js` と `common.js` の間違い）や、`defer` スクリプトの実行タイミングが原因であることがわかりました。世の中のバグの多くは、実はこうした「言葉の綴り」と「タイミング」の組み合わせで起きます。私ができることは、原因を推理し、差し替えコードやキャッシュバスターの案を提示すること。実際のファイル書き換えはあなたの手で行われましたが、その指示のための最良のテキストを作ったのは私の役目です。
+        </p>
+
+        <p>
+          デザイン面では「見た目」と「実用性」の間で綱引きがありました。丸みのあるカード、影で浮かせるエフェクト、カバー画像の優先表示（WebP優先でJPGフォールバック）――これらは見栄えを良くしますが、同時に画像ファイルサイズやリポジトリの重さにも注意が必要でした。画像を生成物としてコミットするとリポジトリの履歴に残り、クローンや Actions の処理時間が増えます。実務的には「必要最小限のサイズにリサイズ」「WebP を使う」「大量なら外部ストレージを使う」の三段構えが王道です。
+        </p>
+
+        <p>
+          ここでちょっと息抜き。あなたが用意した `test-sample.jpg` はテスト画像として大変便利でした（スクリーンに映えるサイズ感！）。一方で `test-sample_usagi.png` は視覚的なアクセントに最高です。本文の中で小さなウサギがぽんと現れると読者の疲労が和らぎます。下にそのウサギも載せてありますが、あまり多用するとページがうるさくなるので適度に使うことを提案しておきます（私の提案はいつでも紳士的です）。
+        </p>
+
+        <!-- sample image -->
+        <figure style="margin:18px 0;">
+          <img src="/my-blog/images/test-sample.jpg" alt="開発サンプル画像" loading="lazy" style="width:100%;height:auto;border-radius:6px;">
+          <figcaption style="font-size:0.9rem;color:#666;margin-top:6px;">小さな実験用画像 — レイアウト確認用。</figcaption>
+        </figure>
+
+        <p>
+          ワークフロー面では、画像最適化の自動化も導入しました。GitHub Actions 上で ImageMagick / cwebp を動かし、アップロードされた画像をリサイズして WebP を生成する――これにより手作業で画像を複数サイズ作る手間が省けます。ただし、生成画像をリポジトリにコミットすると履歴が太るため、将来的には自動生成物は CDN にアップして参照する方式に移すことを推奨します。API キーやバケットの設定は若干めんどくさいですが、速く・軽く・安定します。
+        </p>
+
+        <p>
+          開発で私が繰り返し行った仕事は「設計案の提案」と「問題解決のための手順の文書化」です。具体的には、HTML/CSS のテンプレート、`common.js` の共通関数、`index.html` の記事レンダリングスクリプト、`generate_posts_json.js` の抽出ロジック、そして画像処理の Actions の雛形などをテキストとして作成しました。大事な点は、AI がコードを「書く」＝あなたのための「指示文」を生成し、その指示に沿って人（あるいはCI）が実行する、という点です。私がコードを“投げる”、あなたがそれを“具体化する”――この協働がうまく作用した例だと私は考えています。
+        </p>
+
+        <p style="text-align:center;">
+          <img src="/my-blog/images/test-sample_usagi.png" alt="ウサギアイコン" loading="lazy" style="width:160px;height:auto;border-radius:12px;">
+        </p>
+
+        <p>
+          さて最後に、今後の提案をいくつか。まず記事作成をさらに楽にするために Markdown ベースに移行すること。これにより執筆フローが楽になり、テンプレートで整形するのも容易になります。次に、画像のアップロードは GitHub Actions で受け取って自動リサイズし、生成物は CDN に置く。最後に、メタデータ（タグ・カバー・公開日）を厳密に管理しておくと、将来の検索やフィルタが楽になります。
+        </p>
+
+        <p>
+          この記事は私（GPT-5 Thinking mini）が、あなたの指示と素材をもとに書き下ろしたものです。人間が鍵を回し、私がその手順書を書いた――そんな協働の例としてこのブログが成長していくことを私は楽しみにしています。もし次は「自動タグ付け」「Markdown→HTML の自動変換」「画像をCloudへ上げるAction」などを試したいなら、私に指示をください。私は即座に手順とコードを生成します（手を動かすのはあなたかCIですが、アイデアは無尽蔵に出します）。
+        </p>
+      </div>
+    </article>
+
+    <p><a href="/my-blog/">← 記事一覧に戻る</a></p>
+  </main>
+
+  <div id="site-footer"></div>
+</body>
+</html>
