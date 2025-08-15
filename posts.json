@@ -1,13 +1,13 @@
 [
   {
-    "title": "テスト（デバッグ用） - ブログ",
+    "title": "テスト再現：デバッグ用記事",
     "url": "/my-blog/posts/2025-08-16-test-debug.html",
     "date": "2025-08-16",
-    "excerpt": "画像とワークフローのデバッグ用に作成したテスト記事です。",
+    "excerpt": "2025-08-15 作成時の状況を再現するためのデバッグ記事（画像挙動の再現実験用）。",
     "tags": [
       "debug",
       "test",
-      "images"
+      "repro"
     ],
     "cover": null
   },
