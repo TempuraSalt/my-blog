@@ -3,81 +3,96 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>テスト（デバッグ用） — ブログ</title>
+  <title>テスト再現：デバッグ用記事 — ブログ</title>
 
-  <!-- 管理用メタ -->
-  <meta name="description" content="画像とワークフローのデバッグ用に作成したテスト記事です。">
+  <!-- メタ（自動生成スクリプトで読み取りやすいように） -->
+  <meta name="description" content="2025-08-15 作成時の状況を再現するためのデバッグ記事（画像挙動の再現実験用）。">
   <meta name="date" content="2025-08-16">
-  <meta name="tags" content="debug,test,images">
+  <meta name="tags" content="debug,test,repro">
 
-  <meta property="og:title" content="テスト（デバッグ用） - ブログ">
-  <meta property="og:description" content="画像ロードや posts.json の挙動を検証するためのデバッグ記事です。">
-  <meta property="og:image" content="/my-blog/images/test-sample-image.jpg">
+  <!-- カバーはトップ一覧で使われる想定 -->
+  <meta name="cover" content="/my-blog/images/food_bunka_fry.jpg">
+
+  <!-- OGP -->
+  <meta property="og:title" content="テスト再現：デバッグ用記事">
+  <meta property="og:description" content="画像の読み込み状況や自動化挙動を再現・観察するためのテスト記事です。">
+  <meta property="og:image" content="/my-blog/images/food_bunka_fry.jpg">
 
   <link rel="stylesheet" href="/my-blog/style.css">
   <script src="/my-blog/common.js" defer></script>
-
-  <style>
-    /* 小さなデバッグ用スタイル（ページ内で目立つように） */
-    .dbg { background:#fff9e6; border:1px solid #f0d28a; padding:12px; border-radius:8px; margin:12px 0; font-family:monospace; white-space:pre-wrap; color:#222 }
-    .img-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin:12px 0; }
-    .img-grid img{ width:100%; height:auto; border-radius:8px; display:block; }
-    .ok { color: #0a7a24; font-weight:600 }
-    .bad { color: #c62828; font-weight:700 }
-  </style>
 </head>
 <body>
   <div id="site-header"></div>
 
   <main class="container">
     <article class="post-card">
-      <h1>テスト（デバッグ用） — 画像とワークフローの確認</h1>
+      <h1>テスト再現：デバッグ用記事</h1>
       <div class="post-meta">2025-08-16</div>
+
+      <!-- カバー：pictureでwebpをsourceに置いてフォールバックを試す（webpが無ければ404が出るが img にフォールバックされるはず） -->
+      <figure>
+        <picture>
+          <!-- intentionally reference .webp (may not exist) to reproduce the "missing webp" condition -->
+          <source type="image/webp" srcset="/my-blog/images/food_bunka_fry.webp">
+          <img src="/my-blog/images/food_bunka_fry.jpg"
+               alt="フライのイメージ（デバッグ用カバー）"
+               loading="lazy"
+               style="width:100%;height:auto;border-radius:6px;">
+        </picture>
+        <figcaption style="font-size:0.9rem;color:#666;margin-top:6px;">（デバッグ）カバー画像：food_bunka_fry</figcaption>
+      </figure>
 
       <div class="post-body">
         <p>
-          このページは、サイト上で画像が表示されない問題や posts.json／ワークフローの副作用を調査するために作ったテスト記事です。指定された画像をページに直接貼り、さらにブラウザから fetch で状態を確認する簡易的なデバッグロジックを組み込みました。ページを開いたら、下に並ぶ「画像プレビュー」と「ロード結果」を確認してください。
+          このページは、2025-08-15 に作成した記事とできるだけ近い条件を再現するために作られたデバッグ用の記事です。目的は「新しい記事追加→自動化ワークフロー実行→既存のサムネイルやカバー挙動に何らかの副作用が出るか」を観察することにあります。読み物としては控えめに、しかし検証を正確に行えるよう構成しています。
         </p>
 
         <p>
-          目的は単純です：ブラウザが実際にどの URL にアクセスし、どのステータスが返っているか（200 / 404 等）を可視化すること。そして、DOM に挿入された &lt;img&gt; 要素が onload / onerror をどう受け取るかを確認します。これにより「記事ページだけで画像が消える」タイプの問題（パスの不一致、.webp フォールバックの失敗、CSP/混在コンテンツやキャッシュの影響など）を切り分けられます。
+          最初に行ったことは、記事ヘッダーに `<meta name="cover">` を入れることです。これにより、現行の自動生成スクリプトが記事内メタを読み取る場合と読み取らない場合の差を比較できます。トップの一覧に表示されるサムネイルは `posts.json` の `cover` フィールドを基にしている可能性が高いので、記事内メタと posts.json の整合性を確認する意味も兼ねています。
         </p>
 
-        <h3>テスト画像（指定の3枚）</h3>
-        <div class="img-grid" id="img-grid">
-          <!-- 画像は JavaScript 側でも同じ URL を検証します -->
-          <figure>
-            <img id="img1" src="/my-blog/images/food_bunka_fry.jpg" alt="food_bunka_fry" loading="lazy" onerror="this.dataset.error='error'">
-            <figcaption style="font-size:0.9rem;color:#666;margin-top:6px;">food_bunka_fry.jpg</figcaption>
-          </figure>
-
-          <figure>
-            <img id="img2" src="/my-blog/images/food_za-sai.png" alt="food_za-sai" loading="lazy" onerror="this.dataset.error='error'">
-            <figcaption style="font-size:0.9rem;color:#666;margin-top:6px;">food_za-sai.png</figcaption>
-          </figure>
-
-          <figure>
-            <img id="img3" src="/my-blog/images/test-sample-image.jpg" alt="test-sample-image" loading="lazy" onerror="this.dataset.error='error'">
-            <figcaption style="font-size:0.9rem;color:#666;margin-top:6px;">test-sample-image.jpg</figcaption>
-          </figure>
-        </div>
-
-        <h3>自動チェック結果（fetch & イメージオブジェクト）</h3>
-        <div id="debug-results" class="dbg">実行中…</div>
-
         <p>
-          テスト手順（簡潔）：
-          <ol>
-            <li>ページを開く（Ctrl+F5 で強制リロード）</li>
-            <li>このページの「自動チェック結果」とブラウザ DevTools の Network / Console を確認</li>
-            <li>fetch が 200 を返すのに &lt;img&gt; がエラーになる場合は、CSS 非表示や onerror、CSP 等を疑う</li>
-            <li>fetch が 404 を返す場合は、リポジトリにファイルが無いか参照パスが間違っています（GitHub 上の images/ を確認）</li>
-          </ol>
+          次に、本文中で使う画像を 3 枚すべて明示的に挿入しました。まずはこの `food_bunka_fry.jpg`（上のカバーと同じ画像）、次に `food_za-sai.png`、そして `test-sample-image.jpg` を順にレイアウトに組み込みます。ブラウザの Network タブで .webp のリクエストが 404 になる一方で、フォールバック画像がロードされるかを確認してください。
         </p>
 
-        <h3>追加メモ（デバッグ用）</h3>
         <p>
-          このページで行っているチェックは完全ではありませんが、問題の切り分けに非常に役立ちます。必要ならここにさらに「posts.json の中身を取得して該当エントリを表示」するコードや、「common.js の読み込み状態を表示」する行を追加します。今はまず、この3枚の画像がブラウザで正常に取得できるかを確認してください。
+          ここからは実験的な観察のための短いメモです。よくある現象として、ページの `<picture>` に `.webp` を書き、`.webp` がサーバに無いと Network に 404 が残りますが、通常はすぐに `<img>` にフォールバックするはずです。もしフォールバックが機能せず画像自体が表示されない場合は、`posts.json` の参照先が間違っているか、ページ内のパス（サブパス `/my-blog/` の扱い）が不一致になっている可能性が高いです。
+        </p>
+
+        <p>
+          それでは本文内に画像を表示します。下の画像はすべてリポジトリの `images/` フォルダを参照しています。Network と Console のログを一緒に確認してください（特に 404 / Content-Type / CSP 関連の警告に注目）。
+        </p>
+
+        <!-- 画像1: food_bunka_fry (繰り返し) -->
+        <figure style="margin:18px 0;">
+          <img src="/my-blog/images/food_bunka_fry.jpg" alt="フライ料理の例" loading="lazy" style="width:100%;height:auto;border-radius:6px;">
+          <figcaption style="font-size:0.9rem;color:#666;margin-top:6px;">food_bunka_fry.jpg — カバーと同じ画像（デバッグ確認用）。</figcaption>
+        </figure>
+
+        <!-- 画像2: food_za-sai -->
+        <figure style="margin:18px 0;">
+          <picture>
+            <!-- png has no webp alt here, use img directly for png -->
+            <img src="/my-blog/images/food_za-sai.png" alt="ザーサイのイメージ" loading="lazy" style="width:100%;height:auto;border-radius:6px;">
+          </picture>
+          <figcaption style="font-size:0.9rem;color:#666;margin-top:6px;">food_za-sai.png — PNG の挿入例。</figcaption>
+        </figure>
+
+        <!-- 画像3: test-sample-image -->
+        <figure style="margin:18px 0;">
+          <picture>
+            <source type="image/webp" srcset="/my-blog/images/test-sample-image.webp">
+            <img src="/my-blog/images/test-sample-image.jpg" alt="テストサンプル画像" loading="lazy" style="width:100%;height:auto;border-radius:6px;">
+          </picture>
+          <figcaption style="font-size:0.9rem;color:#666;margin-top:6px;">test-sample-image.jpg — 最後の確認用画像。</figcaption>
+        </figure>
+
+        <p>
+          ここに書かれた文章は実験目的のためのランディングであり、内容の芸術性より再現性を優先しています。実験を行う際は、ページを開いたあとに Network タブをクリアしてから再読み込み（Ctrl+F5）して、発生したリクエストがどの順序で来ているか、どれが 404 になるか、どのリクエストが成功するかを観察してください。
+        </p>
+
+        <p>
+          実験が終わったら、その時点の `posts.json` の該当エントリと Actions の最新ログ（Run の履歴）を一緒に貼ってください。両者を合わせて見ることで「自動化が posts.json を書き換えたのか」「画像が消えたのはファイル欠落なのか」「あるいは path の不一致（/my-blog/ の有無など）なのか」を断定できます。準備が整ったらお知らせください — 私がログを解析して次の手順を出します。
         </p>
 
       </div>
@@ -87,57 +102,5 @@
   </main>
 
   <div id="site-footer"></div>
-
-  <script>
-    // デバッグスクリプト：fetch でステータスを確認し、Image() で onload/onerror を計測する
-    (async function(){
-      const out = document.getElementById('debug-results');
-      const images = [
-        '/my-blog/images/food_bunka_fry.jpg',
-        '/my-blog/images/food_za-sai.png',
-        '/my-blog/images/test-sample-image.jpg'
-      ];
-
-      function appendLine(s){
-        out.textContent += '\\n' + s;
-      }
-      out.textContent = '開始: ' + new Date().toLocaleString();
-
-      for(const url of images){
-        appendLine('\\n--- チェック: ' + url + ' ---');
-
-        // 1) fetch でヘッダを確認（GET）
-        try{
-          const r = await fetch(url, { cache: "no-store" });
-          appendLine('fetch -> status: ' + r.status + ' ' + r.statusText + (r.ok ? ' (OK)' : ' (NG)'));
-          // optionally read small portion? avoid heavy download
-        }catch(e){
-          appendLine('fetch -> exception: ' + e.message);
-        }
-
-        // 2) Image オブジェクトで実際の読み込みを検証
-        await new Promise(resolve=>{
-          const img = new Image();
-          let settled = false;
-          img.onload = function(){ appendLine('Image() -> onload OK'); if(!settled){ settled=true; resolve(); } };
-          img.onerror = function(){ appendLine('Image() -> onerror'); if(!settled){ settled=true; resolve(); } };
-          img.src = url + (url.indexOf('?') === -1 ? '?_dbg=' + Date.now() : '&_dbg=' + Date.now());
-          // timeout fallback
-          setTimeout(()=>{ if(!settled){ appendLine('Image() -> timeout'); settled=true; resolve(); } }, 5000);
-        });
-
-        // 3) check existing <img> element (if present) dataset.error
-        const el = document.querySelector('img[src="'+url+'"]');
-        if(el){
-          if(el.dataset.error) appendLine('DOM <img> has onerror flag (already fired)');
-          else appendLine('DOM <img> shows no onerror flag (not yet errored)');
-        } else {
-          appendLine('DOM <img> not found for this URL on the page');
-        }
-      }
-
-      appendLine('\\nチェック完了: ' + new Date().toLocaleString());
-    })();
-  </script>
 </body>
 </html>
