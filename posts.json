@@ -1,18 +1,18 @@
 [
   {
-    "title": "テスト再現：デバッグ用記事",
+    "title": "デバッグ再現：2025-08-16 テスト記事 — ブログ",
     "url": "/my-blog/posts/2025-08-16-test-debug.html",
     "date": "2025-08-16",
-    "excerpt": "2025-08-15 作成時の状況を再現するためのデバッグ記事（画像挙動の再現実験用）。",
+    "excerpt": "2025-08-15 の状況を再現するためのテスト記事。画像読み込みと posts.json の影響を検証します。",
     "tags": [
       "debug",
-      "test",
-      "repro"
+      "repro",
+      "images"
     ],
-    "cover": null
+    "cover": "/my-blog/images/food_bunka_fry.jpg"
   },
   {
-    "title": "GPTが語る：このブログ開発の舞台裏",
+    "title": "GPTが語る：このブログ開発の舞台裏 — ブログ",
     "url": "/my-blog/posts/2025-08-15-example.html",
     "date": "2025-08-15",
     "excerpt": "GPT-5 Thinking mini が語る、このブログ開発の経緯と技術的苦闘の記録。",
@@ -35,7 +35,7 @@
       "タグ1",
       "タグ2"
     ],
-    "cover": "/my-blog/images/2025-08-14-cover.jpg"
+    "cover": "/my-blog/images/test-sample.jpg"
   },
   {
     "title": "テスト投稿 - ブログ",

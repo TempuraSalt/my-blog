@@ -39,14 +39,27 @@ function extractBetween(html, startRegex, endRegex){
 }
 
 function extractMeta(html, name){
-  // <meta name="name" content="..."> or <meta property="og:title" content="...">
-  const re = new RegExp(`<meta[^>]*(?:name|property)=(["'])${name}\\1[^>]*content=(["'])([\\s\\S]*?)\\2[^>]*>`, 'i');
-  const m = html.match(re);
-  if(m) return m[3].trim();
-  // fallback: search meta with name (loose)
-  const re2 = new RegExp(`<meta[^>]*content=(["'])([\\s\\S]*?)\\1[^>]*name=(["'])${name}\\3[^>]*>`, 'i');
-  const m2 = html.match(re2);
-  if(m2) return m2[2].trim();
+  // より簡単で確実なmetaタグの検出
+  // パターン1: <meta name="name" content="...">
+  let re = new RegExp(`<meta[^>]*name=["']${name}["'][^>]*content=["']([^"']*)["']`, 'i');
+  let m = html.match(re);
+  if(m) return m[1].trim();
+  
+  // パターン2: <meta content="..." name="name">
+  re = new RegExp(`<meta[^>]*content=["']([^"']*)["'][^>]*name=["']${name}["']`, 'i');
+  m = html.match(re);
+  if(m) return m[1].trim();
+  
+  // パターン3: <meta property="og:name" content="...">
+  re = new RegExp(`<meta[^>]*property=["']og:${name}["'][^>]*content=["']([^"']*)["']`, 'i');
+  m = html.match(re);
+  if(m) return m[1].trim();
+  
+  // パターン4: <meta content="..." property="og:name">
+  re = new RegExp(`<meta[^>]*content=["']([^"']*)["'][^>]*property=["']og:${name}["']`, 'i');
+  m = html.match(re);
+  if(m) return m[1].trim();
+  
   return null;
 }
 
@@ -155,6 +168,17 @@ function fileExistsPosix(relPath){
   return fs.existsSync(abs);
 }
 
+// 画像ファイルの存在確認を強化
+function validateImagePath(imagePath) {
+  if (!imagePath) return false;
+  
+  // /my-blog/ プレフィックスを除去して相対パスに変換
+  const relativePath = imagePath.replace(/^\/my-blog\//, '');
+  const fullPath = path.join(REPO_ROOT, relativePath);
+  
+  return fs.existsSync(fullPath);
+}
+
 function normalizeCoverPath(rel){
   if(!rel) return null;
   // ensure it starts with /my-blog/
@@ -170,10 +194,18 @@ function buildPostObject(filename, html, existingByUrl){
   const slug = slugFromFilename(filename);
   const url = `/my-blog/posts/${filename}`;
   const baseObj = { title, url, date, excerpt, tags };
+  
+  // 0) まず meta name="cover" が指定されている場合はそれを優先
+  const coverMeta = extractMeta(html, 'cover');
+  if(coverMeta && validateImagePath(coverMeta)){
+    baseObj.cover = coverMeta;
+    return baseObj;
+  }
+  
   // try to find cover candidate
-  // 1) if existingByUrl has cover (non-empty), preserve it
+  // 1) if existingByUrl has cover (non-empty), preserve it (ただし存在確認)
   const existing = existingByUrl[url];
-  if(existing && existing.cover){
+  if(existing && existing.cover && validateImagePath(existing.cover)){
     baseObj.cover = existing.cover;
     return baseObj;
   }

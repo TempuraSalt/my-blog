@@ -28,16 +28,12 @@
       <h1>デバッグ再現：2025-08-16 テスト記事</h1>
       <div class="post-meta">2025-08-16</div>
 
-      <!-- カバー（.webp を source にして .jpg をフォールバック）-->
+      <!-- カバー画像 -->
       <figure>
-        <picture>
-          <!-- 敢えて .webp を参照（存在しない可能性がある） -->
-          <source type="image/webp" srcset="/my-blog/images/food_bunka_fry.webp">
-          <img src="/my-blog/images/food_bunka_fry.jpg"
-               alt="フライ料理（デバッグ用カバー）"
-               loading="lazy"
-               style="width:100%;height:auto;border-radius:6px;">
-        </picture>
+        <img src="/my-blog/images/food_bunka_fry.jpg"
+             alt="フライ料理（デバッグ用カバー）"
+             loading="lazy"
+             style="width:100%;height:auto;border-radius:6px;">
         <figcaption style="font-size:0.9rem;color:#666;margin-top:6px;">デバッグ用カバー：food_bunka_fry</figcaption>
       </figure>
 
@@ -60,10 +56,7 @@
 
         <!-- 画像1: food_bunka_fry -->
         <figure style="margin:18px 0;">
-          <picture>
-            <source type="image/webp" srcset="/my-blog/images/food_bunka_fry.webp">
-            <img src="/my-blog/images/food_bunka_fry.jpg" alt="food_bunka_fry" loading="lazy" style="width:100%;height:auto;border-radius:6px;">
-          </picture>
+          <img src="/my-blog/images/food_bunka_fry.jpg" alt="food_bunka_fry" loading="lazy" style="width:100%;height:auto;border-radius:6px;">
           <figcaption style="font-size:0.9rem;color:#666;margin-top:6px;">food_bunka_fry.jpg — カバーと同じ画像（再現検証用）。</figcaption>
         </figure>
 
@@ -75,10 +68,7 @@
 
         <!-- 画像3: test-sample-image -->
         <figure style="margin:18px 0;">
-          <picture>
-            <source type="image/webp" srcset="/my-blog/images/test-sample-image.webp">
-            <img src="/my-blog/images/test-sample-image.jpg" alt="test-sample-image" loading="lazy" style="width:100%;height:auto;border-radius:6px;">
-          </picture>
+          <img src="/my-blog/images/test-sample-image.jpg" alt="test-sample-image" loading="lazy" style="width:100%;height:auto;border-radius:6px;">
           <figcaption style="font-size:0.9rem;color:#666;margin-top:6px;">test-sample-image.jpg — 検証用ラスト。</figcaption>
         </figure>
 

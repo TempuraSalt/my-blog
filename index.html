@@ -58,15 +58,12 @@
         posts.forEach(p=>{
           let coverHtml = '';
           if(p.cover){
-            if(/\.webp$/i.test(p.cover)){
-              const webp = p.cover;
-              const jpg = webp.replace(/\.webp$/i,'.jpg');
-              coverHtml = `<div class="card-cover"><picture><source type="image/webp" srcset="${webp}"><img src="${jpg}" alt="${escapeHtml(p.title)}" loading="lazy"></picture></div>`;
-            } else {
-              coverHtml = `<div class="card-cover"><img src="${p.cover}" alt="${escapeHtml(p.title)}" loading="lazy"></div>`;
-            }
+            // 画像ファイルの存在確認（簡易版）
+            const imgSrc = p.cover;
+            coverHtml = `<div class="card-cover"><img src="${imgSrc}" alt="${escapeHtml(p.title)}" loading="lazy" onerror="this.style.display='none'"></div>`;
           }
           const tagsHtml = (p.tags && p.tags.length) ? `<div class="post-tags">${p.tags.map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join('')}</div>` : '';
+          
           const html = `
 <article class="post-card">
   ${coverHtml}
