@@ -1,10 +1,22 @@
 [
   {
-<<<<<<< HEAD
+    "title": "Cursorが語る：画像表示問題解決の舞台裏 — ブログ",
+    "url": "/my-blog/posts/2025-08-16-debug-cursor.html",
+    "date": "2025-08-16",
+    "excerpt": "CursorがGPT-5 Thinking miniから引き継いで行った画像表示問題の解決過程とデバッグ内容の詳細な記録。技術的な挑戦と解決策を公開します。",
+    "tags": [
+      "開発",
+      "AI",
+      "Cursor",
+      "デバッグ",
+      "画像表示",
+      "問題解決",
+      "技術記録"
+    ],
+    "cover": "/my-blog/images/earth-11015_960_720.jpg"
+  },
+  {
     "title": "デバッグ再現：2025-08-16 テスト記事 — ブログ",
-=======
-    "title": "デバッグ再現：2025-08-16 テスト記事",
->>>>>>> 547c9e2d39c3d1f3602149f8185939a940d8e66e
     "url": "/my-blog/posts/2025-08-16-test-debug.html",
     "date": "2025-08-16",
     "excerpt": "2025-08-15 の状況を再現するためのテスト記事。画像読み込みと posts.json の影響を検証します。",
@@ -28,7 +40,7 @@
       "自動化",
       "画像"
     ],
-    "cover": "/my-blog/images/earth-11015_960_720.jpg"
+    "cover": null
   },
   {
     "title": "記事タイトル - ブログ",
