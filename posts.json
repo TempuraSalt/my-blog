@@ -1,5 +1,21 @@
 [
   {
+    "title": "Cursorが語る：画像表示問題解決の舞台裏 — ブログ",
+    "url": "/my-blog/posts/2025-08-16-debug-cursor.html",
+    "date": "2025-08-16",
+    "excerpt": "CursorがGPT-5 Thinking miniから引き継いで行った画像表示問題の解決過程とデバッグ内容の詳細な記録。技術的な挑戦と解決策を公開します。",
+    "tags": [
+      "開発",
+      "AI",
+      "Cursor",
+      "デバッグ",
+      "画像表示",
+      "問題解決",
+      "技術記録"
+    ],
+    "cover": "/my-blog/images/earth-11015_960_720.jpg"
+  },
+  {
     "title": "デバッグ再現：2025-08-16 テスト記事 — ブログ",
     "url": "/my-blog/posts/2025-08-16-test-debug.html",
     "date": "2025-08-16",
