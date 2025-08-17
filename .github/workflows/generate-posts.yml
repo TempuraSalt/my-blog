@@ -32,12 +32,45 @@ jobs:
 
       - name: Commit if changed
         run: |
+          # Generate posts.json first to ensure we have the latest version
+          node generate_posts_json.js
+          
           if git status --porcelain | grep posts.json; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add posts.json
-            git commit -m "chore: update posts.json [skip ci]"
-            git push
+            
+            # Use a simple merge strategy to avoid rebase conflicts
+            git pull origin main --no-rebase || {
+              echo "Pull failed, checking for conflicts..."
+              if git status --porcelain | grep -E "^(UU|AA|DD)" posts.json; then
+                echo "Merge conflict detected in posts.json, resolving..."
+                # Regenerate posts.json to resolve conflicts
+                node generate_posts_json.js
+                git add posts.json
+              fi
+            }
+            
+            # Final check and commit
+            if git status --porcelain | grep posts.json; then
+              git add posts.json
+              git commit -m "chore: update posts.json [skip ci]"
+              
+              # Simple push with single retry
+              if ! git push; then
+                echo "Push failed, pulling latest changes and retrying..."
+                git pull origin main --no-rebase
+                node generate_posts_json.js
+                git add posts.json
+                # Only commit if there are actual changes
+                if git status --porcelain | grep posts.json; then
+                  git commit -m "chore: update posts.json [skip ci]"
+                fi
+                git push
+              fi
+              echo "Successfully updated posts.json"
+            else
+              echo "No changes to posts.json after merge"
+            fi
           else
             echo "No changes to posts.json"
           fi
