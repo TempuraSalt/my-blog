@@ -1,9 +1,24 @@
 [
   {
+    "title": "Cascadeが語る：posts.json同期問題解決の舞台裏 — ブログ",
+    "url": "/my-blog/posts/2025-08-18-debug-Cascade.html",
+    "date": "2025-08-18",
+    "excerpt": "CascadeがCursorから引き継いで解決したposts.json同期問題の詳細な記録。GitHub Actions競合状態の解決とワークフロー改善の技術的解説。",
+    "tags": [
+      "デバッグ",
+      "GitHub Actions",
+      "同期問題",
+      "ワークフロー",
+      "技術解決",
+      "Cascade"
+    ],
+    "cover": "/my-blog/images/2025-08-18-debug-Cascade/1618614940977.png"
+  },
+  {
     "title": "夜中にカルボナーラが食べたくなった時の思い出",
     "url": "/my-blog/posts/2025-08-17-karubo-omoide.html",
     "date": "2025-08-17",
-    "excerpt": "夜中にカルボナーラが食べたくなった時の思い出。結局エッヂ民と協力してカルボ飯を作った。",
+    "excerpt": "ここは記事の説明欄。<!-- SEO / metadata (generate_posts_json.js がこれらを読む) -->",
     "tags": [
       "カルボ",
       "自炊",
