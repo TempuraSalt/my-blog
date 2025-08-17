@@ -1,0 +1,31 @@
+{
+  "name": "my-blog",
+  "version": "1.0.0",
+  "description": "Personal blog with automated post generation",
+  "main": "generate_posts_json.js",
+  "scripts": {
+    "test": "mocha test/**/*.test.js",
+    "test:watch": "mocha test/**/*.test.js --watch",
+    "lint": "eslint *.js lib/**/*.js scripts/**/*.js",
+    "generate": "node generate_posts_json.js",
+    "dev": "npx http-server -p 8000 -c-1",
+    "validate": "node scripts/validate-posts.js"
+  },
+  "devDependencies": {
+    "mocha": "^10.2.0",
+    "chai": "^4.3.10",
+    "sinon": "^17.0.1",
+    "eslint": "^8.57.0",
+    "jsdom": "^23.0.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/my-blog.git"
+  },
+  "keywords": ["blog", "static-site", "github-pages"],
+  "author": "Your Name",
+  "license": "MIT"
+}

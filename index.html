@@ -6,13 +6,7 @@
   <title>ブログ</title>
   <meta name="description" content="個人ブログ。メモや学びをまとめます。">
   <link rel="stylesheet" href="/my-blog/style.css" />
-  <!-- common.js は defer のまま読み込む（ただしここで存在確認を行います） -->
   <script src="/my-blog/common.js" defer></script>
-  <style>
-    /* 簡単なデバッグ表示用スタイル */
-    .debug-box{background:#fff3f3;color:#900;padding:12px;border-radius:8px;margin:12px 0;font-family:monospace;white-space:pre-wrap}
-    .ok-box{background:#f3fff7;color:#064;padding:12px;border-radius:8px;margin:12px 0;font-family:monospace;white-space:pre-wrap}
-  </style>
 </head>
 <body>
   <div id="site-header"></div>
@@ -25,64 +19,95 @@
     <section id="posts" class="posts" aria-label="記事一覧">
       <!-- JavaScriptで埋める -->
     </section>
-
-    <!-- デバッグ表示領域 -->
-    <section id="debug" aria-hidden="false"></section>
   </main>
 
   <div id="site-footer"></div>
 
   <script>
-  // 全体を DOMContentLoaded で待つ（common.js が defer で実行された後に確実に動きます）
-  document.addEventListener('DOMContentLoaded', function () {
-    // helper
-    function escapeHtml(s){ if(!s) return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  document.addEventListener('DOMContentLoaded', async function () {
+    /**
+     * HTMLエスケープ処理（XSS対策）
+     * @param {any} input - エスケープする値
+     * @returns {string} エスケープされた文字列
+     */
+    function escapeHtml(input) { 
+      if (input == null) return ''; 
+      return String(input)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#x27;');
+    }
 
-    (async function(){
-      try{
-        // 確認用（デバッグ）：loadPosts が関数か確認
-        if(typeof loadPosts !== 'function'){
-          console.error('loadPosts is not a function even after DOMContentLoaded. common.js may not define it.');
-          document.getElementById('posts').innerHTML = '<pre style="color:#c00;background:#fff3f3;padding:12px;border-radius:6px;">読み込みエラー: loadPosts が見つかりません。common.js の内容を確認してください。</pre>';
-          return;
+    try {
+      // loadPosts関数が利用可能になるまで安全に待機
+      let attempts = 0;
+      const maxAttempts = 100; // 5秒間待機
+      
+      while (typeof loadPosts !== 'function' && attempts < maxAttempts) {
+        await new Promise(resolve => setTimeout(resolve, 50));
+        attempts++;
+      }
+
+      if (typeof loadPosts !== 'function') {
+        throw new Error('loadPosts関数が利用できません');
+      }
+
+      const posts = await loadPosts();
+      const postsElement = document.getElementById('posts');
+      
+      if (!postsElement) {
+        console.error('posts要素が見つかりません');
+        return;
+      }
+      
+      if (!posts || posts.length === 0) {
+        postsElement.innerHTML = '<p>まだ記事がありません。</p>';
+        return;
+      }
+
+      // 日付順にソート（新しい順）
+      posts.sort((a, b) => b.date.localeCompare(a.date));
+
+      // 記事カードを生成
+      const cardsHtml = posts.map(post => {
+        // 入力値の検証
+        if (!post.title || !post.url || !post.date) {
+          console.warn('無効な記事データをスキップ:', post);
+          return '';
         }
 
-        const posts = await loadPosts();
-        const el = document.getElementById('posts');
-        if(!posts || posts.length === 0){
-          el.innerHTML = '<p>まだ記事がありません。</p>';
-          return;
+        let coverHtml = '';
+        if (post.cover && typeof post.cover === 'string') {
+          coverHtml = `<div class="card-cover"><img src="${escapeHtml(post.cover)}" alt="${escapeHtml(post.title)}" loading="lazy" onerror="this.style.display='none'"></div>`;
         }
-        posts.sort((a,b)=> b.date.localeCompare(a.date));
-
-        posts.forEach(p=>{
-          let coverHtml = '';
-          if(p.cover){
-            // 画像ファイルの存在確認（簡易版）
-            const imgSrc = p.cover;
-            coverHtml = `<div class="card-cover"><img src="${imgSrc}" alt="${escapeHtml(p.title)}" loading="lazy" onerror="this.style.display='none'"></div>`;
-          }
-          const tagsHtml = (p.tags && p.tags.length) ? `<div class="post-tags">${p.tags.map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join('')}</div>` : '';
-          
-          const html = `
+        
+        const tagsHtml = (post.tags && Array.isArray(post.tags) && post.tags.length) ? 
+          `<div class="post-tags">${post.tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}</div>` : '';
+        
+        return `
 <article class="post-card">
   ${coverHtml}
   <div class="card-body">
-    <h3><a href="${p.url}">${escapeHtml(p.title)}</a></h3>
-    <div class="post-meta">${escapeHtml(p.date)}</div>
-    <p>${escapeHtml(p.excerpt || '')}</p>
+    <h3><a href="${escapeHtml(post.url)}">${escapeHtml(post.title)}</a></h3>
+    <div class="post-meta">${escapeHtml(post.date)}</div>
+    <p>${escapeHtml(post.excerpt || '')}</p>
     ${tagsHtml}
   </div>
 </article>`;
-          el.insertAdjacentHTML('beforeend', html);
-        });
-      }catch(err){
-        console.error('posts load error', err);
-        document.getElementById('posts').innerHTML = '<pre style="color:#c00;background:#fff3f3;padding:12px;border-radius:6px;">読み込みエラー:\\n' + escapeHtml(String(err)) + '</pre>';
-      }
-    })();
-  });
-</script>
+      }).filter(html => html.length > 0).join('');
 
+      postsElement.innerHTML = cardsHtml;
+
+    } catch (error) {
+      console.error('記事読み込みエラー:', error);
+      const postsElement = document.getElementById('posts');
+      if (postsElement) {
+        postsElement.innerHTML = '<p>記事の読み込みに失敗しました。ページを再読み込みしてください。</p>';
+      }
+    }
+  });
+  </script>
 </body>
 </html>

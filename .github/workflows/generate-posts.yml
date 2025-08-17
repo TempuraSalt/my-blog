@@ -11,7 +11,7 @@ permissions:
   contents: write
 
 jobs:
-  build:
+  generate:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -24,16 +24,19 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Run generator
+      - name: Install dependencies
+        run: npm ci --only=production || npm install --only=production
+
+      - name: Generate posts.json
         run: node generate_posts_json.js
 
-      - name: Commit posts.json if changed
+      - name: Commit if changed
         run: |
           if git status --porcelain | grep posts.json; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add posts.json
-            git commit -m "chore: update posts.json"
+            git commit -m "chore: update posts.json [skip ci]"
             git push
           else
             echo "No changes to posts.json"

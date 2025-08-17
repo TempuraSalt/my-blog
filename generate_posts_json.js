@@ -1,288 +1,174 @@
 /**
- * generate_posts_json.js
- * - posts/ をスキャンして posts.json を生成
- * - 既存 posts.json があれば読み込み、既に cover を持つ記事の cover は保持する
- *
- * 実行:
- *   node generate_posts_json.js
- *
- * 注意:
- *   - Node.js 14+ 推奨（fs/promises を使用）
- *   - リポジトリルートで実行する想定
+ * generate_posts_json.js - 記事JSON生成スクリプト
+ * 簡単性・可読性・安全性・確実性を重視した改良版
  */
 
 const fs = require('fs');
 const path = require('path');
+const { extractMeta, extractTitle, isValidDateFormat, extractDateFromFilename } = require('./lib/html-parser');
 
 const REPO_ROOT = process.cwd();
 const POSTS_DIR = path.join(REPO_ROOT, 'posts');
-const IMAGES_DIR = path.join(REPO_ROOT, 'images');
-const GENERATED_DIR = path.join(IMAGES_DIR, 'generated');
-const POSTS_JSON = path.join(REPO_ROOT, 'posts.json');
+const OUTPUT_FILE = path.join(REPO_ROOT, 'posts.json');
 
-function safeReadFileSync(p){
-  try { return fs.readFileSync(p, 'utf8'); }
-  catch(e){ return null; }
-}
-
-function extractBetween(html, startRegex, endRegex){
-  const s = html.match(startRegex);
-  if(!s) return null;
-  // if startRegex captures group, return that
-  if(s[1]) return s[1];
-  // otherwise find endRegex from index
-  const idx = html.indexOf(s[0]);
-  if(idx === -1) return null;
-  const sub = html.slice(idx + s[0].length);
-  const m = sub.match(endRegex);
-  return m ? m[1] || m[0] : null;
-}
-
-function extractMeta(html, name){
-  // より簡単で確実なmetaタグの検出
-  // パターン1: <meta name="name" content="...">
-  let re = new RegExp(`<meta[^>]*name=["']${name}["'][^>]*content=["']([^"']*)["']`, 'i');
-  let m = html.match(re);
-  if(m) return m[1].trim();
-  
-  // パターン2: <meta content="..." name="name">
-  re = new RegExp(`<meta[^>]*content=["']([^"']*)["'][^>]*name=["']${name}["']`, 'i');
-  m = html.match(re);
-  if(m) return m[1].trim();
-  
-  // パターン3: <meta property="og:name" content="...">
-  re = new RegExp(`<meta[^>]*property=["']og:${name}["'][^>]*content=["']([^"']*)["']`, 'i');
-  m = html.match(re);
-  if(m) return m[1].trim();
-  
-  // パターン4: <meta content="..." property="og:name">
-  re = new RegExp(`<meta[^>]*content=["']([^"']*)["'][^>]*property=["']og:${name}["']`, 'i');
-  m = html.match(re);
-  if(m) return m[1].trim();
-  
-  return null;
-}
-
-function extractTitle(html){
-  // try og:title, then <title>, then <h1>
-  const og = extractMeta(html, 'og:title') || extractMeta(html, 'og:title'.toLowerCase());
-  if(og) return og;
-  const m = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
-  if(m) return m[1].trim();
-  const h1 = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
-  if(h1) return h1[1].replace(/<[^>]+>/g,'').trim();
-  return null;
-}
-
-function extractDate(html, filename){
-  const metaDate = extractMeta(html, 'date') || extractMeta(html, 'publish_date') || extractMeta(html, 'published');
-  if(metaDate) return metaDate;
-  // fallback to filename like 2025-08-13-slug.html
-  const m = filename.match(/^(\d{4}-\d{2}-\d{2})-/);
-  return m ? m[1] : null;
-}
-
-function extractExcerpt(html){
-  const m = extractMeta(html, 'description') || extractMeta(html, 'Description') || extractMeta(html, 'excerpt');
-  if(m) return m;
-  // first paragraph
-  const p = html.match(/<p[^>]*>([\s\S]*?)<\/p>/i);
-  if(p) return p[1].replace(/<[^>]+>/g,'').trim();
-  return '';
-}
-
-function extractTags(html){
-  const tagsRaw = extractMeta(html, 'tags') || extractMeta(html, 'Tags');
-  if(!tagsRaw) return [];
-  // allow comma, space, Japanese comma
-  return tagsRaw.split(/[,、\s]+/).map(t=>t.trim()).filter(Boolean);
-}
-
-function slugFromFilename(filename){
-  // 2025-08-13-my-post.html => my-post
-  const name = filename.replace(/\.html?$/i,'');
-  const m = name.match(/^\d{4}-\d{2}-\d{2}-(.+)$/);
-  return m ? m[1] : name;
-}
-
-function possibleCoverCandidates(date, slug){
-  // return candidate relative paths (from repo root), in order of preference
-  const candidates = [];
-  // check generated folder variants
-  if(slug){
-    candidates.push(`images/generated/${slug}-800.webp`);
-    candidates.push(`images/generated/${slug}-800.jpg`);
-    candidates.push(`images/generated/${slug}.webp`);
-    candidates.push(`images/generated/${slug}.jpg`);
-  }
-  if(date && slug){
-    candidates.push(`images/generated/${date}-${slug}-800.webp`);
-    candidates.push(`images/generated/${date}-${slug}-800.jpg`);
-  }
-  // check images/ direct
-  if(slug){
-    candidates.push(`images/${slug}-800.webp`);
-    candidates.push(`images/${slug}-800.jpg`);
-    candidates.push(`images/${slug}.webp`);
-    candidates.push(`images/${slug}.jpg`);
-    candidates.push(`images/${slug}.png`);
-  }
-  if(date){
-    candidates.push(`images/${date}-cover.jpg`);
-    candidates.push(`images/${date}-cover.webp`);
-    candidates.push(`images/${date}-cover-800.jpg`);
-    candidates.push(`images/${date}-cover-800.webp`);
-  }
-  // fallback: any file in images/ or images/generated that includes slug or date
-  return candidates;
-}
-
-function listFiles(dir){
-  try{
-    return fs.readdirSync(dir || '.', { withFileTypes: true }).filter(d=>d.isFile()).map(d=>d.name);
-  }catch(e){
-    return [];
+/**
+ * エラークラス - 明確なエラー情報を提供
+ */
+class PostProcessingError extends Error {
+  constructor(message, filename, cause) {
+    super(message);
+    this.name = 'PostProcessingError';
+    this.filename = filename;
+    this.cause = cause;
   }
 }
 
-function findFallbackByScanning(dir, includeTokens){
-  // includeTokens: array of tokens that should appear in filename
-  if(!fs.existsSync(dir)) return null;
-  const files = fs.readdirSync(dir);
-  for(const f of files){
-    const lower = f.toLowerCase();
-    let ok = false;
-    for(const t of includeTokens){
-      if(!t) continue;
-      if(lower.includes(t.toLowerCase())) ok = true;
-      else { ok = false; break; }
+/**
+ * 単一記事ファイルを処理
+ * @param {string} filename - ファイル名
+ * @param {string} html - HTMLコンテンツ
+ * @returns {Object} 記事データオブジェクト
+ */
+function processPostFile(filename, html) {
+  try {
+    const title = extractTitle(html);
+    if (!title) {
+      throw new PostProcessingError('タイトルが見つかりません', filename);
     }
-    if(ok) return path.posix.join(path.basename(dir), f);
-  }
-  return null;
-}
 
-function fileExistsPosix(relPath){
-  // relPath like images/xxx.jpg relative to repo root
-  const abs = path.join(REPO_ROOT, relPath);
-  return fs.existsSync(abs);
-}
-
-// 画像ファイルの存在確認を強化
-function validateImagePath(imagePath) {
-  if (!imagePath) return false;
-  
-  // /my-blog/ プレフィックスを除去して相対パスに変換
-  const relativePath = imagePath.replace(/^\/my-blog\//, '');
-  const fullPath = path.join(REPO_ROOT, relativePath);
-  
-  return fs.existsSync(fullPath);
-}
-
-function normalizeCoverPath(rel){
-  if(!rel) return null;
-  // ensure it starts with /my-blog/
-  if(rel.startsWith('/')) return rel;
-  return `/my-blog/${rel.replace(/^\/+/,'')}`;
-}
-
-function buildPostObject(filename, html, existingByUrl){
-  const title = extractTitle(html) || filename.replace(/\.html$/,'');
-  const date = extractDate(html, filename) || '';
-  const excerpt = extractExcerpt(html) || '';
-  const tags = extractTags(html);
-  const slug = slugFromFilename(filename);
-  const url = `/my-blog/posts/${filename}`;
-  const baseObj = { title, url, date, excerpt, tags };
-  
-  // 0) まず meta name="cover" が指定されている場合はそれを優先
-  const coverMeta = extractMeta(html, 'cover');
-  if(coverMeta && validateImagePath(coverMeta)){
-    baseObj.cover = coverMeta;
-    return baseObj;
-  }
-  
-  // try to find cover candidate
-  // 1) if existingByUrl has cover (non-empty), preserve it (ただし存在確認)
-  const existing = existingByUrl[url];
-  if(existing && existing.cover && validateImagePath(existing.cover)){
-    baseObj.cover = existing.cover;
-    return baseObj;
-  }
-  // 2) try candidates
-  const candidates = possibleCoverCandidates(date, slug);
-  for(const c of candidates){
-    if(fileExistsPosix(c)){
-      baseObj.cover = normalizeCoverPath(c);
-      return baseObj;
+    // 日付の取得と検証
+    let date = extractMeta(html, 'date');
+    if (!date) {
+      // ファイル名から日付を抽出
+      date = extractDateFromFilename(filename);
     }
+    
+    if (!date || !isValidDateFormat(date)) {
+      throw new PostProcessingError(`有効な日付が見つかりません: ${date}`, filename);
+    }
+
+    // 基本データ
+    const post = {
+      title: title.trim(),
+      url: `/my-blog/posts/${filename}`,
+      date: date,
+      excerpt: extractMeta(html, 'description') || '',
+      tags: [],
+      cover: null
+    };
+
+    // タグの処理
+    const tagsStr = extractMeta(html, 'tags');
+    if (tagsStr) {
+      post.tags = tagsStr.split(',')
+        .map(tag => tag.trim())
+        .filter(tag => tag.length > 0);
+    }
+
+    // カバー画像の処理
+    const cover = extractMeta(html, 'cover');
+    if (cover) {
+      // 相対パスを絶対パスに変換
+      if (cover.startsWith('/my-blog/')) {
+        post.cover = cover;
+      } else if (cover.startsWith('images/')) {
+        post.cover = `/my-blog/${cover}`;
+      } else if (!cover.startsWith('http')) {
+        post.cover = `/my-blog/images/${cover}`;
+      } else {
+        post.cover = cover;
+      }
+    }
+
+    return post;
+
+  } catch (error) {
+    if (error instanceof PostProcessingError) {
+      throw error;
+    }
+    throw new PostProcessingError('記事処理中にエラーが発生しました', filename, error);
   }
-  // 3) attempt scanning fallback (generated then images)
-  const tokens = [slug, date].filter(Boolean);
-  let found = findFallbackByScanning(GENERATED_DIR, tokens);
-  if(found){
-    baseObj.cover = normalizeCoverPath(found);
-    return baseObj;
-  }
-  found = findFallbackByScanning(IMAGES_DIR, tokens);
-  if(found){
-    baseObj.cover = normalizeCoverPath(found);
-    return baseObj;
-  }
-  // else no cover
-  baseObj.cover = null;
-  return baseObj;
 }
 
-(async function main(){
-  try{
-    if(!fs.existsSync(POSTS_DIR)){
-      console.error('posts directory not found:', POSTS_DIR);
+/**
+ * メイン処理関数
+ */
+async function main() {
+  console.log('📝 記事JSON生成を開始します...');
+
+  try {
+    // postsディレクトリの存在確認
+    if (!fs.existsSync(POSTS_DIR)) {
+      throw new Error(`postsディレクトリが見つかりません: ${POSTS_DIR}`);
+    }
+
+    // HTMLファイルの取得
+    const files = fs.readdirSync(POSTS_DIR)
+      .filter(file => file.endsWith('.html') && !file.startsWith('post-template'))
+      .sort();
+
+    if (files.length === 0) {
+      console.log('⚠️  処理対象の記事ファイルが見つかりませんでした');
+      await fs.promises.writeFile(OUTPUT_FILE, JSON.stringify([], null, 2), 'utf8');
+      return;
+    }
+
+    console.log(`📄 ${files.length}個のファイルを処理します`);
+
+    const posts = [];
+    const errors = [];
+
+    // 各ファイルを処理
+    for (const filename of files) {
+      try {
+        console.log(`  処理中: ${filename}`);
+        const filepath = path.join(POSTS_DIR, filename);
+        const html = await fs.promises.readFile(filepath, 'utf8');
+        const post = processPostFile(filename, html);
+        posts.push(post);
+        console.log(`  ✅ 完了: ${post.title}`);
+      } catch (error) {
+        console.error(`  ❌ エラー: ${filename} - ${error.message}`);
+        errors.push({ filename, error: error.message });
+      }
+    }
+
+    // 日付順にソート（新しい順）
+    posts.sort((a, b) => b.date.localeCompare(a.date));
+
+    // JSON出力
+    await fs.promises.writeFile(OUTPUT_FILE, JSON.stringify(posts, null, 2), 'utf8');
+
+    // 結果レポート
+    console.log('\n📊 処理結果:');
+    console.log(`  - 成功: ${posts.length}件`);
+    console.log(`  - エラー: ${errors.length}件`);
+    
+    if (errors.length > 0) {
+      console.log('\n❌ エラーファイル:');
+      errors.forEach(({ filename, error }) => {
+        console.log(`  - ${filename}: ${error}`);
+      });
       process.exit(1);
     }
 
-    // load existing posts.json if exists
-    let existingPosts = [];
-    try{
-      if(fs.existsSync(POSTS_JSON)){
-        const raw = fs.readFileSync(POSTS_JSON, 'utf8');
-        existingPosts = JSON.parse(raw);
-      }
-    }catch(e){
-      console.warn('Warning: could not parse existing posts.json, continuing with empty existing list.', e.message);
-      existingPosts = [];
-    }
-    const existingByUrl = Object.fromEntries((existingPosts||[]).map(p=>[p.url, p]));
+    console.log(`\n✅ posts.json を生成しました (${posts.length}件の記事)`);
 
-    // scan posts dir
-    const files = fs.readdirSync(POSTS_DIR).filter(f => /\.html?$/.test(f)).sort();
-    const newPosts = [];
-    for(const f of files){
-      const p = path.join(POSTS_DIR, f);
-      const html = safeReadFileSync(p) || '';
-      const obj = buildPostObject(f, html, existingByUrl);
-      newPosts.push(obj);
+  } catch (error) {
+    console.error('\n💥 致命的エラー:', error.message);
+    if (error.cause) {
+      console.error('原因:', error.cause.message);
     }
-
-    // sort by date desc (if date missing, keep filename order)
-    newPosts.sort((a,b)=>{
-      if(a.date && b.date) return b.date.localeCompare(a.date);
-      if(a.date) return -1;
-      if(b.date) return 1;
-      return 0;
-    });
-
-    // compare with existing posts.json content
-    const newJson = JSON.stringify(newPosts, null, 2) + '\n';
-    const existingRaw = fs.existsSync(POSTS_JSON) ? fs.readFileSync(POSTS_JSON, 'utf8') : null;
-    if(existingRaw === newJson){
-      console.log('No changes to posts.json');
-    } else {
-      fs.writeFileSync(POSTS_JSON, newJson, 'utf8');
-      console.log('posts.json updated: wrote', POSTS_JSON);
-    }
-  }catch(err){
-    console.error('generate_posts_json.js error:', err);
-    process.exit(2);
+    process.exit(1);
   }
-})();
+}
+
+// スクリプトとして実行された場合のみmainを呼び出し
+if (require.main === module) {
+  main().catch(error => {
+    console.error('予期しないエラー:', error);
+    process.exit(1);
+  });
+}
+
+module.exports = { processPostFile, PostProcessingError };
