@@ -1,5 +1,17 @@
 [
   {
+    "title": "AIちゃんにも困ったもんだ、と思う。",
+    "url": "/my-blog/posts/2025-08-18-boyaki.html",
+    "date": "2025-08-18",
+    "excerpt": "やれやれだぜ。",
+    "tags": [
+      "AI",
+      "サイト開発",
+      "デバッグ"
+    ],
+    "cover": "/my-blog/images/2025-08-18-boyaki/PXL_20250718_080248769~2.jpg"
+  },
+  {
     "title": "Cascadeが語る：posts.json同期問題解決の舞台裏 — ブログ",
     "url": "/my-blog/posts/2025-08-18-debug-Cascade.html",
     "date": "2025-08-18",
