@@ -155,3 +155,36 @@ a:hover{text-decoration:underline}
   .card-body{ padding:12px; }
   .post-card{ border-radius:10px }
 }
+
+/* Pagination */
+.pagination{
+  display:flex;
+  gap:8px;
+  justify-content:center;
+  align-items:center;
+  margin:8px 0 24px;
+  flex-wrap:wrap;
+}
+.page-link{
+  display:inline-block;
+  padding:6px 10px;
+  border:1px solid rgba(0,0,0,0.12);
+  border-radius:8px;
+  background:#fff;
+  color:var(--accent);
+  text-decoration:none;
+  font-weight:600;
+  min-width:32px;
+  text-align:center;
+}
+.page-link:hover{ background:#f3f7fb; }
+.page-link.current{
+  background:#0b72c3;
+  color:#fff;
+  border-color:#0b72c3;
+  cursor:default;
+}
+.page-link.disabled{
+  pointer-events:none;
+  opacity:.45;
+}

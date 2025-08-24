@@ -19,6 +19,7 @@
     <section id="posts" class="posts" aria-label="記事一覧">
       <!-- JavaScriptで埋める -->
     </section>
+    <nav id="pagination" class="pagination" aria-label="ページネーション"></nav>
   </main>
 
   <div id="site-footer"></div>
@@ -40,6 +41,101 @@
         .replace(/'/g, '&#x27;');
     }
 
+    // ページネーション設定
+    const PAGE_SIZE = 10;
+
+    function getCurrentPage() {
+      const params = new URLSearchParams(location.search);
+      const p = parseInt(params.get('page') || '1', 10);
+      return Number.isFinite(p) && p > 0 ? p : 1;
+    }
+
+    function buildPageUrl(page) {
+      const url = new URL(location.href);
+      url.searchParams.set('page', String(page));
+      return url.pathname + url.search;
+    }
+
+    function renderPagination(current, total) {
+      const el = document.getElementById('pagination');
+      if (!el) return;
+      if (total <= 1) { el.innerHTML = ''; return; }
+
+      const maxButtons = 7; // 表示するページ番号数の目安
+      let start = Math.max(1, current - Math.floor(maxButtons / 2));
+      let end = start + maxButtons - 1;
+      if (end > total) { end = total; start = Math.max(1, end - maxButtons + 1); }
+
+      const parts = [];
+      // First/Prev
+      parts.push(`<a class="page-link${current===1?' disabled':''}" href="${buildPageUrl(1)}" aria-label="最初のページ">«</a>`);
+      parts.push(`<a class="page-link${current===1?' disabled':''}" href="${buildPageUrl(Math.max(1, current-1))}" aria-label="前のページ">‹</a>`);
+      // Numbers
+      for (let i = start; i <= end; i++) {
+        if (i === current) {
+          parts.push(`<span class="page-link current" aria-current="page">${i}</span>`);
+        } else {
+          parts.push(`<a class="page-link" href="${buildPageUrl(i)}">${i}</a>`);
+        }
+      }
+      // Next/Last
+      parts.push(`<a class="page-link${current===total?' disabled':''}" href="${buildPageUrl(Math.min(total, current+1))}" aria-label="次のページ">›</a>`);
+      parts.push(`<a class="page-link${current===total?' disabled':''}" href="${buildPageUrl(total)}" aria-label="最後のページ">»</a>`);
+
+      el.innerHTML = parts.join('');
+    }
+
+    function renderPosts(posts, current, pageSize) {
+      const postsElement = document.getElementById('posts');
+      if (!postsElement) {
+        console.error('posts要素が見つかりません');
+        return;
+      }
+
+      if (!posts || posts.length === 0) {
+        postsElement.innerHTML = '<p>まだ記事がありません。</p>';
+        renderPagination(1, 1);
+        return;
+      }
+
+      // 新しい順
+      posts.sort((a, b) => b.date.localeCompare(a.date));
+
+      const totalPages = Math.max(1, Math.ceil(posts.length / pageSize));
+      const currentPage = Math.min(getCurrentPage(), totalPages);
+      const start = (currentPage - 1) * pageSize;
+      const end = start + pageSize;
+      const pagePosts = posts.slice(start, end);
+
+      const cardsHtml = pagePosts.map(post => {
+        if (!post.title || !post.url || !post.date) {
+          console.warn('無効な記事データをスキップ:', post);
+          return '';
+        }
+
+        let coverHtml = '';
+        if (post.cover && typeof post.cover === 'string') {
+          coverHtml = `<div class="card-cover"><img src="${escapeHtml(post.cover)}" alt="${escapeHtml(post.title)}" loading="lazy" onerror="this.style.display='none'"></div>`;
+        }
+        const tagsHtml = (post.tags && Array.isArray(post.tags) && post.tags.length) ? 
+          `<div class="post-tags">${post.tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}</div>` : '';
+
+        return `
+<article class="post-card">
+  ${coverHtml}
+  <div class="card-body">
+    <h3><a href="${escapeHtml(post.url)}">${escapeHtml(post.title)}</a></h3>
+    <div class="post-meta">${escapeHtml(post.date)}</div>
+    <p>${escapeHtml(post.excerpt || '')}</p>
+    ${tagsHtml}
+  </div>
+</article>`;
+      }).filter(Boolean).join('');
+
+      postsElement.innerHTML = cardsHtml;
+      renderPagination(currentPage, totalPages);
+    }
+
     try {
       // loadPosts関数が利用可能になるまで安全に待機
       let attempts = 0;
@@ -55,50 +151,7 @@
       }
 
       const posts = await loadPosts();
-      const postsElement = document.getElementById('posts');
-      
-      if (!postsElement) {
-        console.error('posts要素が見つかりません');
-        return;
-      }
-      
-      if (!posts || posts.length === 0) {
-        postsElement.innerHTML = '<p>まだ記事がありません。</p>';
-        return;
-      }
-
-      // 日付順にソート（新しい順）
-      posts.sort((a, b) => b.date.localeCompare(a.date));
-
-      // 記事カードを生成
-      const cardsHtml = posts.map(post => {
-        // 入力値の検証
-        if (!post.title || !post.url || !post.date) {
-          console.warn('無効な記事データをスキップ:', post);
-          return '';
-        }
-
-        let coverHtml = '';
-        if (post.cover && typeof post.cover === 'string') {
-          coverHtml = `<div class="card-cover"><img src="${escapeHtml(post.cover)}" alt="${escapeHtml(post.title)}" loading="lazy" onerror="this.style.display='none'"></div>`;
-        }
-        
-        const tagsHtml = (post.tags && Array.isArray(post.tags) && post.tags.length) ? 
-          `<div class="post-tags">${post.tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}</div>` : '';
-        
-        return `
-<article class="post-card">
-  ${coverHtml}
-  <div class="card-body">
-    <h3><a href="${escapeHtml(post.url)}">${escapeHtml(post.title)}</a></h3>
-    <div class="post-meta">${escapeHtml(post.date)}</div>
-    <p>${escapeHtml(post.excerpt || '')}</p>
-    ${tagsHtml}
-  </div>
-</article>`;
-      }).filter(html => html.length > 0).join('');
-
-      postsElement.innerHTML = cardsHtml;
+      renderPosts(posts, getCurrentPage(), PAGE_SIZE);
 
     } catch (error) {
       console.error('記事読み込みエラー:', error);
