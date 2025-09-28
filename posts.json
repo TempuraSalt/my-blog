@@ -8,11 +8,7 @@
       "解説",
       "ミーム"
     ],
-<<<<<<< HEAD
     "cover": "/my-blog/images/2025-09-26-DinamitaDeDoramichan/youtubedoramisamune.png"
-=======
-    "cover": "/my-blog/images/\\my-blog\\images\\2025-09-26-DinamitaDeDoramichan\\youtubedoramisamune.png"
->>>>>>> 60ecfbe11b195acdf7e9a660affd38b05a6979f6
   },
   {
     "title": "ジムノペディは遅ければ遅いほどいい",
@@ -34,18 +30,6 @@
       "開発"
     ],
     "cover": null
-  },
-  {
-    "title": "熱気バサラを越えるキャラクターが存在しない理由",
-    "url": "/my-blog/posts/2025-08-25-KantrandeBasaraCulture.html",
-    "date": "2025-08-25",
-    "excerpt": "熱気バサラとはキリストである",
-    "tags": [
-      "理由",
-      "アニメ",
-      "マクロス"
-    ],
-    "cover": "/my-blog/images/test-sample.jpg"
   },
   {
     "title": "AIちゃんにも困ったもんだ、と思う。",
