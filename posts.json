@@ -1,5 +1,16 @@
 [
   {
+    "title": "¡MEME JAPONÉS EXPLICADO!: ドラミちゃんの「ダイナマイト」 (Dynamite de Dorami-chan)",
+    "url": "/my-blog/posts/2025-09-26-DinamitaDeDoramichan.html",
+    "date": "2025-09-26",
+    "excerpt": "Meme japonés explicado: ¿Que es Dorami-chan no Dynamite?",
+    "tags": [
+      "解説",
+      "ミーム"
+    ],
+    "cover": "/my-blog/images/2025-09-26-DinamitaDeDoramichan/youtubedoramisamune.png"
+  },
+  {
     "title": "ジムノペディは遅ければ遅いほどいい",
     "url": "/my-blog/posts/2025-08-26-Gymno.html",
     "date": "2025-08-26",
@@ -15,10 +26,22 @@
     "date": "2025-08-25",
     "excerpt": "この記事の短い説明（excerpt）",
     "tags": [
-      "タグ1",
-      "タグ2"
+      "AI",
+      "開発"
     ],
     "cover": null
+  },
+  {
+    "title": "熱気バサラを越えるキャラクターが存在しない理由",
+    "url": "/my-blog/posts/2025-08-25-KantrandeBasaraCulture.html",
+    "date": "2025-08-25",
+    "excerpt": "熱気バサラとはキリストである",
+    "tags": [
+      "理由",
+      "アニメ",
+      "マクロス"
+    ],
+    "cover": "/my-blog/images/test-sample.jpg"
   },
   {
     "title": "AIちゃんにも困ったもんだ、と思う。",
@@ -27,7 +50,7 @@
     "excerpt": "やれやれだぜ。",
     "tags": [
       "AI",
-      "サイト開発",
+      "開発",
       "デバッグ"
     ],
     "cover": "/my-blog/images/2025-08-18-boyaki/PXL_20250718_080248769~2.jpg"
@@ -38,6 +61,8 @@
     "date": "2025-08-18",
     "excerpt": "CascadeがCursorから引き継いで解決したposts.json同期問題の詳細な記録。GitHub Actions競合状態の解決とワークフロー改善の技術的解説。",
     "tags": [
+      "AI",
+      "開発",
       "デバッグ",
       "GitHub Actions",
       "同期問題",
@@ -53,6 +78,7 @@
     "date": "2025-08-17",
     "excerpt": "ここは記事の説明欄。<!-- SEO / metadata (generate_posts_json.js がこれらを読む) -->",
     "tags": [
+      "思い出",
       "カルボ",
       "自炊",
       "夜食",
