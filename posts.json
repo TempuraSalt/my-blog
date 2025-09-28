@@ -8,7 +8,11 @@
       "解説",
       "ミーム"
     ],
+<<<<<<< HEAD
     "cover": "/my-blog/images/2025-09-26-DinamitaDeDoramichan/youtubedoramisamune.png"
+=======
+    "cover": "/my-blog/images/\\my-blog\\images\\2025-09-26-DinamitaDeDoramichan\\youtubedoramisamune.png"
+>>>>>>> 60ecfbe11b195acdf7e9a660affd38b05a6979f6
   },
   {
     "title": "ジムノペディは遅ければ遅いほどいい",
