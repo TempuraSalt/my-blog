@@ -1,5 +1,20 @@
 [
   {
+    "title": "Cascadeによるブログシステム改善レポート — ブログ",
+    "url": "/my-blog/posts/2025-10-12-cascade-updates.html",
+    "date": "2025-10-12",
+    "excerpt": "Cascade AIによるブログシステムの包括的な改善レポート。Git同期エラー解決、自動化ワークフロー最適化、コード品質向上について詳細に解説します。",
+    "tags": [
+      "Cascade",
+      "AIアシスタント",
+      "システム改善",
+      "Gitワークフロー",
+      "自動化",
+      "コードレビュー"
+    ],
+    "cover": "/my-blog/images/earth-11015_960_720.jpg"
+  },
+  {
     "title": "Gemini Code Assistによるコードレビュー総括 — ブログ",
     "url": "/my-blog/posts/2025-10-02-gemini-code-assist-review.html",
     "date": "2025-10-02",
