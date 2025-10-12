@@ -45,16 +45,12 @@
 <body>
   <div id="site-header"></div>
 
-  <main class="container">
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/my-blog/">ホーム</a></li>
-        <li class="breadcrumb-item active" aria-current="page">10年前のワインと瞳を閉じて</li>
-      </ol>
-    </nav>
+  <main class="container" data-page-type="post">
+    <div id="breadcrumb-container"></div>
+
     <article class="post-card">
       <h1>10年前のワインと瞳を閉じて</h1>
-      <div class="post-meta">2025-10-01 · タグ: <span class="tags">思い出,酒,映画</span></div>
+      <div class="post-meta" data-post-element="meta"></div>
 
       <div class="post-body">
         <p>
@@ -66,11 +62,7 @@
           🍷🎥<br>
         </p>
 
-        <figure style="margin:18px 0;">
-          <img src="/my-blog/images/2025-10-01-DIVINO/DSC_0453.JPG" 
-               loading="lazy" 
-               style="width:100%;height:auto;border-radius:6px;">
-        </figure>
+        <div data-post-element="cover-container"></div>
         <p>
           今回併せる映画はこちら。『瞳を閉じて』（原題Cerrar los ojos）<br>
           いきなり冷やして状態が変わる前に、そのままの味を確認しておこう。
@@ -120,7 +112,7 @@
       </div>
     </article>
 
-    <p><a href="/my-blog/">← 記事一覧に戻る</a></p>
+    <div id="post-footer-nav"></div>
   </main>
 
   <div id="site-footer"></div>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>記事タイトル - ブログ・ザ・ブログ-built by AI</title>
+  <title>記事タイトル</title> <!-- JSで完全なタイトルに置換されます -->
 
   <!-- SEO / metadata (generate_posts_json.js がこれらを読む) -->
   <meta name="description" content="この記事の短い説明（excerpt）">
@@ -12,15 +12,15 @@
   <meta name="cover" content="/my-blog/images/test-sample.jpg">
 
   <!-- Canonical URL -->
-  <link rel="canonical" href="https://tempurasalt.github.io/my-blog/posts/ファイル名.html">
+  <link rel="canonical" href=""> <!-- generate_sitemap.js で設定されるため空でOK -->
 
   <!-- OGP / SNS用 -->
   <meta property="og:site_name" content="ブログ・ザ・ブログ-built by AI">
   <meta property="og:type" content="article">
-  <meta property="og:title" content="記事タイトル">
-  <meta property="og:description" content="この記事の短い説明">
-  <meta property="og:image" content="/my-blog/images/test-sample.jpg">
-  <meta property="og:url" content="https://tempurasalt.github.io/my-blog/posts/ファイル名.html">
+  <meta property="og:title" content=""> <!-- JSで設定 -->
+  <meta property="og:description" content=""> <!-- JSで設定 -->
+  <meta property="og:image" content=""> <!-- JSで設定 -->
+  <meta property="og:url" content=""> <!-- generate_sitemap.js で設定されるため空でOK -->
 
   <link rel="stylesheet" href="/my-blog/style.css">
   <script src="/my-blog/common.js" defer></script>
@@ -28,19 +28,15 @@
 <body>
   <div id="site-header"></div>
 
-  <main class="container">
+  <main class="container" data-page-type="post">
+    <div id="breadcrumb-container"></div>
+
     <article class="post-card">
       <h1>記事タイトル</h1>
-      <div class="post-meta">2025-08-14 · タグ: <span class="tags">タグ1, タグ2</span></div>
+      <div class="post-meta" data-post-element="meta"></div>
 
       <!-- カバー画像 -->
-      <figure>
-        <img
-          src="/my-blog/images/test-sample.jpg"
-          alt="記事のサムネイル説明"
-          style="width:100%;height:auto;border-radius:6px;">
-        <figcaption style="font-size:0.9rem;color:#666;margin-top:6px;">画像説明（省略可）</figcaption>
-      </figure>
+      <div data-post-element="cover-container"></div>
 
       <div class="post-body">
         <p>本文はここに書きます。段落ごとに &lt;p&gt; を使ってください。</p>
@@ -48,7 +44,7 @@
       </div>
     </article>
 
-    <p><a href="/my-blog/">← 記事一覧に戻る</a></p>
+    <div id="post-footer-nav"></div>
   </main>
 
   <div id="site-footer"></div>
