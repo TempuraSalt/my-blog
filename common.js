@@ -4,6 +4,18 @@
  */
 
 /**
+ * common.js の初期化が完了したことを示すPromise。
+ * 他のスクリプトは、このPromiseが解決されるのを待つことで、
+ * 安全に関数やデータを利用できる。
+ */
+window.commonReady = new Promise(resolve => {
+  // DOMContentLoadedイベントをリッスンし、すべての初期化処理が終わったらresolve()を呼ぶ
+  document.addEventListener('DOMContentLoaded', async () => {
+    await initializeCommon();
+    resolve();
+  });
+});
+/**
  * ページの一部を安全に読み込む
  * @param {string} path - 読み込むファイルのパス
  * @param {string} selector - 挿入先のセレクター
@@ -78,8 +90,13 @@ window.loadPosts = async function() {
   }
 };
 
-// DOMContentLoaded時にヘッダーとフッターを挿入
-document.addEventListener('DOMContentLoaded', () => {
-  include('/my-blog/header.html', '#site-header');
-  include('/my-blog/footer.html', '#site-footer');
-});
+/**
+ * ヘッダーとフッターの読み込みなど、共通の初期化処理をまとめた関数
+ */
+async function initializeCommon() {
+  // Promise.allを使って並行して読み込むことで高速化
+  await Promise.all([
+    include('/my-blog/header.html', '#site-header'),
+    include('/my-blog/footer.html', '#site-footer')
+  ]);
+}

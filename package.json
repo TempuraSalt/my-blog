@@ -9,7 +9,9 @@
     "lint": "eslint *.js lib/**/*.js scripts/**/*.js",
     "generate": "node generate_posts_json.js",
     "dev": "npx http-server -p 8000 -c-1",
-    "validate": "node scripts/validate-posts.js"
+    "validate": "node scripts/validate-posts.js",
+    "seo-enhancement": "node scripts/seo-enhancement.js",
+    "sitemap": "node scripts/generate-sitemap.js"
   },
   "devDependencies": {
     "chai": "^4.3.10",

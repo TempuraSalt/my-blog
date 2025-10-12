@@ -89,8 +89,14 @@
 
       const parts = [];
       // First/Prev
-      parts.push(`<a class="page-link${current===1?' disabled':''}" href="${buildPageUrl(1)}" aria-label="最初のページ">«</a>`);
-      parts.push(`<a class="page-link${current===1?' disabled':''}" href="${buildPageUrl(Math.max(1, current-1))}" aria-label="前のページ">‹</a>`);
+      if (current === 1) {
+        parts.push('<span class="page-link disabled" aria-label="最初のページ">«</span>');
+        parts.push('<span class="page-link disabled" aria-label="前のページ">‹</span>');
+      } else {
+        parts.push(`<a class="page-link" href="${buildPageUrl(1)}" aria-label="最初のページ">«</a>`);
+        parts.push(`<a class="page-link" href="${buildPageUrl(current - 1)}" aria-label="前のページ">‹</a>`);
+      }
+
       // Numbers
       for (let i = start; i <= end; i++) {
         if (i === current) {
@@ -100,8 +106,13 @@
         }
       }
       // Next/Last
-      parts.push(`<a class="page-link${current===total?' disabled':''}" href="${buildPageUrl(Math.min(total, current+1))}" aria-label="次のページ">›</a>`);
-      parts.push(`<a class="page-link${current===total?' disabled':''}" href="${buildPageUrl(total)}" aria-label="最後のページ">»</a>`);
+      if (current === total) {
+        parts.push('<span class="page-link disabled" aria-label="次のページ">›</span>');
+        parts.push('<span class="page-link disabled" aria-label="最後のページ">»</span>');
+      } else {
+        parts.push(`<a class="page-link" href="${buildPageUrl(current + 1)}" aria-label="次のページ">›</a>`);
+        parts.push(`<a class="page-link" href="${buildPageUrl(total)}" aria-label="最後のページ">»</a>`);
+      }
 
       el.innerHTML = parts.join('');
     }
@@ -158,19 +169,15 @@
     }
 
     try {
-      // loadPosts関数が利用可能になるまで安全に待機
-      let attempts = 0;
-      const maxAttempts = 100; // 5秒間待機
-      
-      while (typeof loadPosts !== 'function' && attempts < maxAttempts) {
-        await new Promise(resolve => setTimeout(resolve, 50));
-        attempts++;
+      // common.js の準備が完了するのを待つ (common.js側でPromiseの提供を想定)
+      if (typeof window.commonReady === 'object' && typeof window.commonReady.then === 'function') {
+        await window.commonReady;
       }
-
       if (typeof loadPosts !== 'function') {
         throw new Error('loadPosts関数が利用できません');
       }
 
+      // common.js で定義された loadPosts を呼び出す
       const posts = await loadPosts();
       renderPosts(posts, getCurrentPage(), PAGE_SIZE);
 

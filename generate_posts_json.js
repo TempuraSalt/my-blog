@@ -68,16 +68,7 @@ function processPostFile(filename, html) {
     // カバー画像の処理
     const cover = extractMeta(html, 'cover');
     if (cover) {
-      // 相対パスを絶対パスに変換
-      if (cover.startsWith('/my-blog/')) {
-        post.cover = cover;
-      } else if (cover.startsWith('images/')) {
-        post.cover = `/my-blog/${cover}`;
-      } else if (!cover.startsWith('http')) {
-        post.cover = `/my-blog/images/${cover}`;
-      } else {
-        post.cover = cover;
-      }
+      post.cover = cover;
     }
 
     return post;

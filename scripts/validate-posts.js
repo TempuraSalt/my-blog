@@ -59,6 +59,23 @@ function validatePostFile(filename, html) {
     errors.push(`dateの形式が正しくありません: ${date} (YYYY-MM-DD形式で入力してください)`);
   }
 
+  // SEO/OGPメタタグチェック
+  if (!html.includes('rel="canonical"')) {
+    warnings.push('canonical URL (<link rel="canonical" ...>) が見つかりません');
+  }
+
+  const ogTitle = extractMeta(html, 'og:title', 'property');
+  if (!ogTitle) {
+    warnings.push('OGPタイトル (<meta property="og:title" ...>) が見つかりません');
+  }
+
+  const ogImage = extractMeta(html, 'og:image', 'property');
+  if (!ogImage) {
+    warnings.push('OGP画像 (<meta property="og:image" ...>) が見つかりません');
+  } else if (ogImage.startsWith('http')) {
+    warnings.push(`og:imageのパスは絶対パス (/my-blog/images/...) を推奨します: ${ogImage}`);
+  }
+
   // CSSとJSの読み込みチェック
   if (!html.includes('href="/my-blog/style.css"')) {
     errors.push('style.cssの読み込みが見つかりません');
