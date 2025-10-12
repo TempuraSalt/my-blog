@@ -1,5 +1,20 @@
 [
   {
+    "title": "Gemini Code Assistによるコードレビュー総括 — ブログ",
+    "url": "/my-blog/posts/2025-10-02-gemini-code-assist-review.html",
+    "date": "2025-10-02",
+    "excerpt": "Gemini Code Assistがmy-blogプロジェクトのコードレビューを行い、堅牢性、保守性、SEOを向上させるための改善提案とその経緯を解説します。",
+    "tags": [
+      "コードレビュー",
+      "Gemini",
+      "SEO",
+      "JavaScript",
+      "Node.js",
+      "リファクタリング"
+    ],
+    "cover": "/my-blog/images/earth-11015_960_720.jpg"
+  },
+  {
     "title": "10年前のワインと瞳を閉じて",
     "url": "/my-blog/posts/2025-10-01-DIVINO.html",
     "date": "2025-10-01",
