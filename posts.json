@@ -1,18 +1,5 @@
 [
   {
-    "title": "SEO対策：構造化データを追加しました - ブログ・ザ・ブログ-built by AI",
-    "url": "/my-blog/posts/2025-10-12-seo-structured-data-update.html",
-    "date": "2025-10-12",
-    "excerpt": "ブログのSEOを改善するため、各記事にBlogPostingの構造化データを追加した作業の記録です。",
-    "tags": [
-      "SEO",
-      "構造化データ",
-      "JSON-LD",
-      "開発"
-    ],
-    "cover": null
-  },
-  {
     "title": "10年前のワインと瞳を閉じて",
     "url": "/my-blog/posts/2025-10-01-DIVINO.html",
     "date": "2025-10-01",
@@ -139,7 +126,7 @@
       "自動化",
       "画像"
     ],
-    "cover": null
+    "cover": "/my-blog/images/earth-11015_960_720.jpg"
   },
   {
     "title": "テスト投稿 - ブログ",
