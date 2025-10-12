@@ -1,4 +1,6 @@
+# すべてのクローラーを許可
 User-agent: *
 Allow: /
 
+# サイトマップの場所を通知
 Sitemap: https://tempurasalt.github.io/my-blog/sitemap.xml

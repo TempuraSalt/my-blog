@@ -170,15 +170,14 @@
 
     try {
       // common.js の準備が完了するのを待つ (common.js側でPromiseの提供を想定)
-      if (typeof window.commonReady === 'object' && typeof window.commonReady.then === 'function') {
-        await window.commonReady;
-      }
-      if (typeof loadPosts !== 'function') {
-        throw new Error('loadPosts関数が利用できません');
-      }
+      await (window.commonReady || Promise.resolve());
 
       // common.js で定義された loadPosts を呼び出す
-      const posts = await loadPosts();
+      if (typeof window.loadPosts !== 'function') {
+        throw new Error('loadPosts関数がグローバルスコープで利用できません。common.jsの実装を確認してください。');
+      }
+
+      const posts = await window.loadPosts();
       renderPosts(posts, getCurrentPage(), PAGE_SIZE);
 
     } catch (error) {

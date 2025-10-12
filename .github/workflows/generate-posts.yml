@@ -1,3 +1,18 @@
+name: Generate posts.json
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  generate-posts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
       - name: Generate posts.json
         run: |
           node generate_posts_json.js
+        env:
+          NODE_OPTIONS: "--max-old-space-size=4096"

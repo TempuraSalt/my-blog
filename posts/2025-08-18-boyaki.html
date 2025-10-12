@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>AIちゃんにも困ったもんだ、と思う。</title>
+  <title>AIちゃんにも困ったもんだ、と思う。 - ブログ・ザ・ブログ-built by AI</title>
 
   <!-- SEO / metadata (generate_posts_json.js がこれらを読む) -->
   <meta name="description" content="やれやれだぜ。">
@@ -22,10 +22,13 @@
 <body>
   <div id="site-header"></div>
 
-  <main class="container">
+  <main class="container" data-page-type="post">
+    <div id="breadcrumb-container"></div>
     <article class="post-card">
       <h1>AIちゃんにも困ったもんだ、と思う。</h1>
-      <div class="post-meta">2025-08-18 · タグ: <span class="tags">AI, 開発, デバッグ</span></div>
+      <!-- <div class="post-meta">2025-08-18 · タグ: <span class="tags">AI, 開発, デバッグ</span></div> -->
+      <div class="post-meta" data-post-element="meta"></div>
+      <div data-post-element="cover-container"></div>
 
       <!-- カバー画像 -->
       <figure style="margin:18px 0;">
@@ -76,7 +79,7 @@
       </div>
     </article>
 
-    <p><a href="/my-blog/">← 記事一覧に戻る</a></p>
+    <div id="post-footer-nav"></div>
   </main>
 
   <div id="site-footer"></div>

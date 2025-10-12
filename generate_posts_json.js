@@ -9,6 +9,7 @@ const { extractMeta, extractTitle, isValidDateFormat, extractDateFromFilename } 
 
 const REPO_ROOT = process.cwd();
 const POSTS_DIR = path.join(REPO_ROOT, 'posts');
+const IMAGES_DIR = path.join(REPO_ROOT, 'images');
 const OUTPUT_FILE = path.join(REPO_ROOT, 'posts.json');
 
 /**
@@ -20,6 +21,22 @@ class PostProcessingError extends Error {
     this.name = 'PostProcessingError';
     this.filename = filename;
     this.cause = cause;
+  }
+}
+
+/**
+ * カバー画像のパスを検証し、存在すれば正規化されたパスを返す
+ * @param {string} coverPath - メタタグから抽出したカバー画像のパス
+ * @returns {string|null} - 検証済みのパス、または存在しない場合はnull
+ */
+function validateCoverPath(coverPath) {
+  if (!coverPath || typeof coverPath !== 'string') {
+    return null;
+  }
+  // 先頭のスラッシュを削除して、リポジトリルートからの相対パスに
+  const relativePath = coverPath.startsWith('/') ? coverPath.substring(1) : coverPath;
+  if (fs.existsSync(path.join(REPO_ROOT, relativePath))) {
+    return path.normalize(coverPath).replace(/\\/g, '/'); // 常にスラッシュ区切りに
   }
 }
 
@@ -69,6 +86,8 @@ function processPostFile(filename, html) {
     const cover = extractMeta(html, 'cover');
     if (cover) {
       post.cover = cover;
+    if (cover && cover !== 'null') {
+      post.cover = validateCoverPath(cover);
     }
 
     return post;
