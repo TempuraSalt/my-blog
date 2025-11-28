@@ -84,11 +84,9 @@ function processPostFile(filename, html) {
 
     // カバー画像の処理
     const cover = extractMeta(html, 'cover');
-    if (cover) {
-      post.cover = cover;
-    if (cover && cover !== 'null') {
+    if (cover && cover.trim() !== '' && cover.trim() !== 'null') {
       post.cover = validateCoverPath(cover);
-    }
+    } // coverが存在しない、または空や'null'の場合は、post.coverは初期値のnullのまま
 
     return post;
 

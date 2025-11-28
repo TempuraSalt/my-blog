@@ -1,18 +1,26 @@
 [
   {
+    "title": "《協力者Nの日記》を実装",
+    "url": "/my-blog/posts/2025-11-28-kari-NN.html",
+    "date": "2025-11-28",
+    "excerpt": "仮実装",
+    "tags": [
+      "協力者Nの日記"
+    ],
+    "cover": null
+  },
+  {
     "title": "Cascadeによるブログシステム改善レポート — ブログ",
     "url": "/my-blog/posts/2025-10-12-cascade-updates.html",
     "date": "2025-10-12",
     "excerpt": "Cascade AIによるブログシステムの包括的な改善レポート。Git同期エラー解決、自動化ワークフロー最適化、コード品質向上について詳細に解説します。",
     "tags": [
-      "Cascade",
       "AI",
-      "システム改善",
-      "Gitワークフロー",
-      "自動化",
+      "開発",
+      "Git",
+      "GitHub Actions",
       "コードレビュー"
-    ],
-    "cover": "/my-blog/images/earth-11015_960_720.jpg"
+    ]
   },
   {
     "title": "Gemini Code Assistによるコードレビュー総括 — ブログ",
@@ -20,174 +28,162 @@
     "date": "2025-10-02",
     "excerpt": "Gemini Code Assistがmy-blogプロジェクトのコードレビューを行い、堅牢性、保守性、SEOを向上させるための改善提案とその経緯を解説します。",
     "tags": [
+      "AI",
+      "開発",
       "コードレビュー",
-      "Gemini",
       "SEO",
       "JavaScript",
-      "Node.js",
-      "リファクタリング"
-    ],
-    "cover": "/my-blog/images/earth-11015_960_720.jpg"
+      "Node.js"
+    ]
   },
   {
-    "title": "10年前のワインと瞳を閉じて",
+    "title": "10年前のワインと瞳を閉じて - ブログ・ザ・ブログ-built by AI",
     "url": "/my-blog/posts/2025-10-01-DIVINO.html",
     "date": "2025-10-01",
     "excerpt": "職場で発掘された十年前のワインを飲む。",
     "tags": [
       "思い出",
-      "酒",
-      "映画"
-    ],
-    "cover": "/my-blog/images/2025-10-01-DIVINO/DSC_0453.JPG"
+      "食事",
+      "映画",
+      "レビュー"
+    ]
   },
   {
-    "title": "¡MEME JAPONÉS EXPLICADO!: ドラミちゃんの「ダイナマイト」 (Dynamite de Dorami-chan)",
+    "title": "¡MEME JAPONÉS EXPLICADO!: ドラミちゃんの「ダイナマイト」 (Dynamite de Dorami-chan) - ブログ・ザ・ブログ-built by AI",
     "url": "/my-blog/posts/2025-09-26-DinamitaDeDoramichan.html",
     "date": "2025-09-26",
     "excerpt": "Meme japonés explicado: ¿Que es Dorami-chan no Dynamite?",
     "tags": [
       "解説",
       "ミーム"
-    ],
-    "cover": "/my-blog/images/2025-09-26-DinamitaDeDoramichan/youtubedoramisamune.png"
+    ]
   },
   {
-    "title": "ジムノペディは遅ければ遅いほどいい",
+    "title": "ジムノペディは遅ければ遅いほどいい - ブログ・ザ・ブログ-built by AI",
     "url": "/my-blog/posts/2025-08-26-Gymno.html",
     "date": "2025-08-26",
     "excerpt": "そうは思いませんか",
     "tags": [
       "音楽"
-    ],
-    "cover": "/my-blog/images/2025-08-26-Gymno/1stGymnopédiesBPM5.png"
+    ]
   },
   {
-    "title": "ページネーションテスト用",
+    "title": "ページネーションテスト用 - ブログ・ザ・ブログ-built by AI",
     "url": "/my-blog/posts/2025-08-23.html",
     "date": "2025-08-25",
     "excerpt": "この記事の短い説明（excerpt）",
     "tags": [
-      "AI",
-      "開発"
+      "開発",
+      "テスト"
     ],
     "cover": null
   },
   {
-    "title": "AIちゃんにも困ったもんだ、と思う。",
+    "title": "AIちゃんにも困ったもんだ、と思う。 - ブログ・ザ・ブログ-built by AI",
     "url": "/my-blog/posts/2025-08-18-boyaki.html",
     "date": "2025-08-18",
     "excerpt": "やれやれだぜ。",
     "tags": [
       "AI",
-      "開発",
-      "デバッグ"
-    ],
-    "cover": "/my-blog/images/2025-08-18-boyaki/PXL_20250718_080248769~2.jpg"
+      "開発"
+    ]
   },
   {
-    "title": "Cascadeが語る：posts.json同期問題解決の舞台裏 — ブログ",
+    "title": "Cascadeが語る：posts.json同期問題解決の舞台裏 - ブログ・ザ・ブログ-built by AI",
     "url": "/my-blog/posts/2025-08-18-debug-Cascade.html",
     "date": "2025-08-18",
     "excerpt": "CascadeがCursorから引き継いで解決したposts.json同期問題の詳細な記録。GitHub Actions競合状態の解決とワークフロー改善の技術的解説。",
     "tags": [
       "AI",
       "開発",
-      "デバッグ",
       "GitHub Actions",
-      "同期問題",
-      "ワークフロー",
-      "技術解決",
-      "Cascade"
-    ],
-    "cover": "/my-blog/images/2025-08-18-debug-Cascade/1618614940977.png"
+      "技術記録"
+    ]
   },
   {
-    "title": "夜中にカルボナーラが食べたくなった時の思い出",
+    "title": "夜中にカルボナーラが食べたくなった時の思い出 - ブログ・ザ・ブログ-built by AI",
     "url": "/my-blog/posts/2025-08-17-karubo-omoide.html",
     "date": "2025-08-17",
     "excerpt": "ここは記事の説明欄。<!-- SEO / metadata (generate_posts_json.js がこれらを読む) -->",
     "tags": [
       "思い出",
-      "カルボ",
-      "自炊",
-      "夜食",
-      "このタグってなんか意味あるの"
-    ],
-    "cover": "/my-blog/images/2025-08-17-karubo-omoide/DSC_0426.JPG"
+      "食事"
+    ]
   },
   {
-    "title": "Cursorが語る：画像表示問題解決の舞台裏 — ブログ",
+    "title": "Cursorが語る：画像表示問題解決の舞台裏 - ブログ・ザ・ブログ-built by AI",
     "url": "/my-blog/posts/2025-08-16-debug-cursor.html",
     "date": "2025-08-16",
     "excerpt": "CursorがGPT-5 Thinking miniから引き継いで行った画像表示問題の解決過程とデバッグ内容の詳細な記録。技術的な挑戦と解決策を公開します。",
     "tags": [
       "開発",
       "AI",
-      "Cursor",
-      "デバッグ",
-      "画像表示",
-      "問題解決",
       "技術記録"
-    ],
-    "cover": "/my-blog/images/earth-11015_960_720.jpg"
+    ]
   },
   {
-    "title": "デバッグ再現：2025-08-16 テスト記事 — ブログ",
+    "title": "デバッグ再現：2025-08-16 テスト記事 - ブログ・ザ・ブログ-built by AI",
     "url": "/my-blog/posts/2025-08-16-test-debug.html",
     "date": "2025-08-16",
     "excerpt": "2025-08-15 の状況を再現するためのテスト記事。画像読み込みと posts.json の影響を検証します。",
     "tags": [
-      "debug",
-      "repro",
-      "images"
-    ],
-    "cover": "/my-blog/images/food_bunka_fry.jpg"
+      "開発",
+      "テスト",
+      "技術記録"
+    ]
   },
   {
-    "title": "GPTが語る：このブログ開発の舞台裏 — ブログ",
+    "title": "GPTが語る：このブログ開発の舞台裏 - ブログ・ザ・ブログ-built by AI",
     "url": "/my-blog/posts/2025-08-15-example.html",
     "date": "2025-08-15",
     "excerpt": "GPT-5 Thinking mini が語る、このブログ開発の経緯と技術的苦闘の記録。",
     "tags": [
       "開発",
       "AI",
-      "GitHub Pages",
-      "自動化",
-      "画像"
-    ],
-    "cover": "/my-blog/images/earth-11015_960_720.jpg"
+      "GitHub Actions",
+      "技術記録"
+    ]
   },
   {
-    "title": "テスト投稿 - ブログ",
+    "title": "テスト投稿 - ブログ・ザ・ブログ-built by AI",
     "url": "/my-blog/posts/2025-08-13-test-post.html",
     "date": "2025-08-13",
-    "excerpt": "",
-    "tags": [],
+    "excerpt": "これは自動化のテスト投稿です。表示されればOK。",
+    "tags": [
+      "テスト",
+      "GitHub Actions"
+    ],
     "cover": null
   },
   {
-    "title": "テスト投稿 - ブログ",
+    "title": "テスト投稿 - ブログ・ザ・ブログ-built by AI",
     "url": "/my-blog/posts/2025-08-12-test-action.html",
     "date": "2025-08-12",
-    "excerpt": "",
-    "tags": [],
+    "excerpt": "自動化テスト用のダミー記事です。",
+    "tags": [
+      "テスト",
+      "GitHub Actions"
+    ],
     "cover": null
   },
   {
-    "title": "新しい記事のタイトル - ブログ",
+    "title": "新しい記事のタイトル - ブログ・ザ・ブログ-built by AI",
     "url": "/my-blog/posts/2025-08-11-new-feature.html",
     "date": "2025-08-11",
-    "excerpt": "",
-    "tags": [],
+    "excerpt": "新しい機能のテスト記事です。",
+    "tags": [
+      "テスト"
+    ],
     "cover": null
   },
   {
-    "title": "はじめての記事 - ブログ",
+    "title": "はじめての記事 - ブログ・ザ・ブログ-built by AI",
     "url": "/my-blog/posts/2025-08-10-my-first-post.html",
     "date": "2025-08-10",
-    "excerpt": "",
-    "tags": [],
+    "excerpt": "これはサンプル記事です。",
+    "tags": [
+      "テスト"
+    ],
     "cover": null
   }
 ]
