@@ -20,7 +20,8 @@
       "Git",
       "GitHub Actions",
       "コードレビュー"
-    ]
+    ],
+    "cover": "/my-blog/images/earth-11015_960_720.jpg"
   },
   {
     "title": "Gemini Code Assistによるコードレビュー総括 — ブログ",
@@ -34,7 +35,8 @@
       "SEO",
       "JavaScript",
       "Node.js"
-    ]
+    ],
+    "cover": "/my-blog/images/earth-11015_960_720.jpg"
   },
   {
     "title": "10年前のワインと瞳を閉じて - ブログ・ザ・ブログ-built by AI",
@@ -46,7 +48,8 @@
       "食事",
       "映画",
       "レビュー"
-    ]
+    ],
+    "cover": "/my-blog/images/2025-10-01-DIVINO/DSC_0453.JPG"
   },
   {
     "title": "¡MEME JAPONÉS EXPLICADO!: ドラミちゃんの「ダイナマイト」 (Dynamite de Dorami-chan) - ブログ・ザ・ブログ-built by AI",
@@ -56,7 +59,8 @@
     "tags": [
       "解説",
       "ミーム"
-    ]
+    ],
+    "cover": "/my-blog/images/2025-09-26-DinamitaDeDoramichan/youtubedoramisamune.png"
   },
   {
     "title": "ジムノペディは遅ければ遅いほどいい - ブログ・ザ・ブログ-built by AI",
@@ -65,7 +69,8 @@
     "excerpt": "そうは思いませんか",
     "tags": [
       "音楽"
-    ]
+    ],
+    "cover": "/my-blog/images/2025-08-26-Gymno/1stGymnopédiesBPM5.png"
   },
   {
     "title": "ページネーションテスト用 - ブログ・ザ・ブログ-built by AI",
@@ -86,7 +91,8 @@
     "tags": [
       "AI",
       "開発"
-    ]
+    ],
+    "cover": "/my-blog/images/2025-08-18-boyaki/PXL_20250718_080248769~2.jpg"
   },
   {
     "title": "Cascadeが語る：posts.json同期問題解決の舞台裏 - ブログ・ザ・ブログ-built by AI",
@@ -98,7 +104,8 @@
       "開発",
       "GitHub Actions",
       "技術記録"
-    ]
+    ],
+    "cover": "/my-blog/images/2025-08-18-debug-Cascade/1618614940977.png"
   },
   {
     "title": "夜中にカルボナーラが食べたくなった時の思い出 - ブログ・ザ・ブログ-built by AI",
@@ -108,7 +115,8 @@
     "tags": [
       "思い出",
       "食事"
-    ]
+    ],
+    "cover": "/my-blog/images/2025-08-17-karubo-omoide/DSC_0426.JPG"
   },
   {
     "title": "Cursorが語る：画像表示問題解決の舞台裏 - ブログ・ザ・ブログ-built by AI",
@@ -119,7 +127,8 @@
       "開発",
       "AI",
       "技術記録"
-    ]
+    ],
+    "cover": "/my-blog/images/earth-11015_960_720.jpg"
   },
   {
     "title": "デバッグ再現：2025-08-16 テスト記事 - ブログ・ザ・ブログ-built by AI",
@@ -130,7 +139,8 @@
       "開発",
       "テスト",
       "技術記録"
-    ]
+    ],
+    "cover": "/my-blog/images/food_bunka_fry.jpg"
   },
   {
     "title": "GPTが語る：このブログ開発の舞台裏 - ブログ・ザ・ブログ-built by AI",
@@ -142,7 +152,8 @@
       "AI",
       "GitHub Actions",
       "技術記録"
-    ]
+    ],
+    "cover": "/my-blog/images/earth-11015_960_720.jpg"
   },
   {
     "title": "テスト投稿 - ブログ・ザ・ブログ-built by AI",

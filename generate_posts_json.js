@@ -29,15 +29,14 @@ class PostProcessingError extends Error {
  * @param {string} coverPath - メタタグから抽出したカバー画像のパス
  * @returns {string|null} - 検証済みのパス、または存在しない場合はnull
  */
-function validateCoverPath(coverPath) {
+function normalizeCoverPath(coverPath) {
   if (!coverPath || typeof coverPath !== 'string') {
     return null;
   }
-  // 先頭のスラッシュを削除して、リポジトリルートからの相対パスに
-  const relativePath = coverPath.startsWith('/') ? coverPath.substring(1) : coverPath;
-  if (fs.existsSync(path.join(REPO_ROOT, relativePath))) {
-    return path.normalize(coverPath).replace(/\\/g, '/'); // 常にスラッシュ区切りに
-  }
+  // パスの区切り文字を常にスラッシュ'/'に正規化する。
+  // ファイルシステムの存在確認は行わない。パスが正しいかはブラウザが表示時に判断する。
+  // これにより、ローカルでの生成時とWebサーバーでの表示時のパスの不整合を防ぐ。
+  return path.normalize(coverPath).replace(/\\/g, '/');
 }
 
 /**
@@ -85,7 +84,7 @@ function processPostFile(filename, html) {
     // カバー画像の処理
     const cover = extractMeta(html, 'cover');
     if (cover && cover.trim() !== '' && cover.trim() !== 'null') {
-      post.cover = validateCoverPath(cover);
+      post.cover = normalizeCoverPath(cover);
     } // coverが存在しない、または空や'null'の場合は、post.coverは初期値のnullのまま
 
     return post;
