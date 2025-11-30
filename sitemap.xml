@@ -1,138 +1,168 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
   <url>
     <loc>https://tempurasalt.github.io/my-blog/</loc>
-    <lastmod>2025-10-02</lastmod> <!-- NOTE: この日付は最終更新日に自動更新するのが望ましい -->
+    <lastmod>2025-11-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://tempurasalt.github.io/my-blog/about.html</loc>
-    <lastmod>2025-10-02</lastmod>
+    <lastmod>2025-08-10</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://tempurasalt.github.io/my-blog/contact.html</loc>
-    <lastmod>2025-10-02</lastmod>
+    <lastmod>2025-08-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://tempurasalt.github.io/my-blog/posts/2025-08-10-my-first-post.html</loc>
-    <lastmod>2025-08-10</lastmod>
+    <lastmod>2025-10-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://tempurasalt.github.io/my-blog/posts/2025-08-11-new-feature.html</loc>
-    <lastmod>2025-08-11</lastmod>
+    <lastmod>2025-10-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://tempurasalt.github.io/my-blog/posts/2025-08-12-test-action.html</loc>
-    <lastmod>2025-08-12</lastmod>
+    <lastmod>2025-10-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://tempurasalt.github.io/my-blog/posts/2025-08-13-test-post.html</loc>
-    <lastmod>2025-08-13</lastmod>
+    <lastmod>2025-10-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://tempurasalt.github.io/my-blog/posts/2025-08-15-example.html</loc>
-    <lastmod>2025-08-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://tempurasalt.github.io/my-blog/posts/2025-08-16-debug-cursor.html</loc>
-    <lastmod>2025-08-16</lastmod>
+    <lastmod>2025-10-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image>
       <image:loc>https://tempurasalt.github.io/my-blog/images/earth-11015_960_720.jpg</image:loc>
-      <image:title>Cursorが語る：画像表示問題解決の舞台裏</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://tempurasalt.github.io/my-blog/posts/2025-08-16-debug-cursor.html</loc>
+    <lastmod>2025-10-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://tempurasalt.github.io/my-blog/images/earth-11015_960_720.jpg</image:loc>
     </image:image>
   </url>
   <url>
     <loc>https://tempurasalt.github.io/my-blog/posts/2025-08-16-test-debug.html</loc>
-    <lastmod>2025-08-16</lastmod>
+    <lastmod>2025-10-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image>
       <image:loc>https://tempurasalt.github.io/my-blog/images/food_bunka_fry.jpg</image:loc>
-      <image:title>デバッグ再現：2025-08-16 テスト記事</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://tempurasalt.github.io/my-blog/posts/2025-08-17-karubo-omoide.html</loc>
-    <lastmod>2025-08-17</lastmod>
+    <lastmod>2025-10-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image>
       <image:loc>https://tempurasalt.github.io/my-blog/images/2025-08-17-karubo-omoide/DSC_0426.JPG</image:loc>
-      <image:title>夜中にカルボナーラが食べたくなった時の思い出</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://tempurasalt.github.io/my-blog/posts/2025-08-18-boyaki.html</loc>
-    <lastmod>2025-08-18</lastmod>
+    <lastmod>2025-10-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image>
       <image:loc>https://tempurasalt.github.io/my-blog/images/2025-08-18-boyaki/PXL_20250718_080248769~2.jpg</image:loc>
-      <image:title>AIちゃんにも困ったもんだ、と思う。</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://tempurasalt.github.io/my-blog/posts/2025-08-18-debug-Cascade.html</loc>
-    <lastmod>2025-08-18</lastmod>
+    <lastmod>2025-10-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image>
       <image:loc>https://tempurasalt.github.io/my-blog/images/2025-08-18-debug-Cascade/1618614940977.png</image:loc>
-      <image:title>Cascadeが語る：posts.json同期問題解決の舞台裏</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://tempurasalt.github.io/my-blog/posts/2025-08-23.html</loc>
-    <lastmod>2025-08-23</lastmod>
+    <lastmod>2025-10-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://tempurasalt.github.io/my-blog/posts/2025-08-26-Gymno.html</loc>
-    <lastmod>2025-08-26</lastmod>
+    <lastmod>2025-10-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image>
       <image:loc>https://tempurasalt.github.io/my-blog/images/2025-08-26-Gymno/1stGymnopédiesBPM5.png</image:loc>
-      <image:title>ジムノペディは遅ければ遅いほどいい</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://tempurasalt.github.io/my-blog/posts/2025-09-26-DinamitaDeDoramichan.html</loc>
-    <lastmod>2025-09-26</lastmod>
+    <lastmod>2025-10-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image>
       <image:loc>https://tempurasalt.github.io/my-blog/images/2025-09-26-DinamitaDeDoramichan/youtubedoramisamune.png</image:loc>
-      <image:title>¡MEME JAPONÉS EXPLICADO!: ドラミちゃんの「ダイナマイト」 (Dynamite de Dorami-chan)</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://tempurasalt.github.io/my-blog/posts/2025-10-01-DIVINO.html</loc>
-    <lastmod>2025-10-01</lastmod>
+    <lastmod>2025-10-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image>
       <image:loc>https://tempurasalt.github.io/my-blog/images/2025-10-01-DIVINO/DSC_0453.JPG</image:loc>
-      <image:title>10年前のワインと瞳を閉じて</image:title>
     </image:image>
   </url>
-</urlset>
+  <url>
+    <loc>https://tempurasalt.github.io/my-blog/posts/2025-10-02-gemini-code-assist-review.html</loc>
+    <lastmod>2025-10-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://tempurasalt.github.io/my-blog/images/earth-11015_960_720.jpg</image:loc>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://tempurasalt.github.io/my-blog/posts/2025-10-12-cascade-updates.html</loc>
+    <lastmod>2025-10-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://tempurasalt.github.io/my-blog/images/earth-11015_960_720.jpg</image:loc>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://tempurasalt.github.io/my-blog/posts/2025-11-28-kari-NN-amor.html</loc>
+    <lastmod>2025-11-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://tempurasalt.github.io/my-blog/posts/2025-11-28-kari-NN.html</loc>
+    <lastmod>2025-11-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://tempurasalt.github.io/my-blog/posts/2025-11-30-nn-void.html</loc>
+    <lastmod>2025-11-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url></urlset>
