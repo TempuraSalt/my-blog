@@ -1,14 +1,12 @@
 /**
  * generate-sitemap.js
  * sitemap.xmlを自動生成するスクリプト
+ * posts.jsonを情報源として利用します。
  */
-const { extractMeta } = require('../lib/html-parser');
-
 const fs = require('fs');
 const path = require('path');
 
 const REPO_ROOT = process.cwd();
-const POSTS_DIR = path.join(REPO_ROOT, 'posts');
 
 /**
  * ファイルの最終更新日を取得（YYYY-MM-DD形式）
@@ -77,18 +75,17 @@ function generateSitemap() {
   });
 
   // 記事ページ
-  if (fs.existsSync(POSTS_DIR)) {
-    const postFiles = fs.readdirSync(POSTS_DIR)
-      .filter(f => f.endsWith('.html') && !f.startsWith('post-template'))
-      .sort();
+  const postsJsonPath = path.join(REPO_ROOT, 'posts.json');
+  if (fs.existsSync(postsJsonPath)) {
+    const posts = JSON.parse(fs.readFileSync(postsJsonPath, 'utf8'));
 
-    postFiles.forEach(filename => {
-      const filepath = path.join(POSTS_DIR, filename);
-      const lastmod = getFileLastModified(filepath);
-      const html = fs.readFileSync(filepath, 'utf8');
-      const imageUrl = extractMeta(html, 'og:image', 'property');
-
-      const url = `https://tempurasalt.github.io/my-blog/posts/${filename}`;
+    posts.forEach(post => {
+      // post.url は /my-blog/posts/... の形式なので、ドメインを追加
+      const url = `https://tempurasalt.github.io${post.url}`;
+      // post.date を lastmod として使用
+      const lastmod = post.date;
+      // post.cover があれば画像URLとして使用
+      const imageUrl = post.cover;
 
       sitemap += generateUrlEntry(url, lastmod, '0.9', 'weekly', imageUrl);
     });

@@ -11,7 +11,8 @@
     "dev": "npx http-server -p 8000 -c-1",
     "validate": "node scripts/validate-posts.js",
     "seo-enhancement": "node scripts/seo-enhancement.js",
-    "sitemap": "node scripts/generate-sitemap.js"
+    "sitemap": "node scripts/generate-sitemap.js",
+    "build": "npm run generate && npm run sitemap && cp sitemap.xml public/"
   },
   "devDependencies": {
     "chai": "^4.3.10",
